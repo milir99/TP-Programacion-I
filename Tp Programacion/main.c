@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "pila.h"
 #include <string.h>
-
+//NO
 int main()
 {
 int eleccion;
