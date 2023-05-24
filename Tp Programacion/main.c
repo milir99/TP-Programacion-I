@@ -1,3 +1,20 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "pila.h"
+#include <string.h>
+
+typedef struct {
+
+int codigo;
+char nombre[20];
+int precio;
+int costo;
+
+}producto;
+
+void CargarProducto(producto arr[],int validos,int *cantProductos);
+producto NuevoProducto();
+
 int main()
 {
 producto productos[100];
