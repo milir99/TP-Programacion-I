@@ -1,15 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "pila.h"
-#include <string.h>
-
 int main()
 {
+producto productos[100];
+int cantProductos = 0;
 int eleccion;
+
+
 do{
     printf("\nIngrese la opcion que desea realizar \n");
     printf(" 0.Terminar el programa\n");
-    printf(" 1.\n");
+    printf(" 1. Cargar un producto\n");
     printf(" 2.\n");
     printf(" 3.\n");
     printf(" 4. \n");
@@ -22,9 +21,12 @@ do{
 
     fflush(stdin);
     scanf("%i",&eleccion);
+
     switch(eleccion)
     {
         case 1:
+            CargarProducto(productos,100,&cantProductos);
+
 
             break;
         case 2:
@@ -43,12 +45,57 @@ do{
         case 7:
             break;
         case 8:
-            break;     
+            break;
         case 9:
-            break; 
+            break;
         case 10:
-            break;               
+            break;
+
 }
+
     } while (eleccion != 0);
+
+}
+
+
+void CargarProducto(producto arr[],int validos,int *cantProductos){
+
+char eleccion = 's';
+
+while(*cantProductos<validos && eleccion == 's'){
+
+arr[*cantProductos] = NuevoProducto();
+
+*cantProductos++;
+
+printf("si desea seguir cargando escriba 's'\n");
+fflush(stdin);
+scanf("%c",&eleccion);
+
+}
+
+}
+
+producto NuevoProducto(){
+
+producto productoNuevo;
+
+printf("Codigo de producto:\n");
+fflush(stdin);
+scanf("%i",&productoNuevo.codigo);
+
+printf("Nombre del producto:\n");
+fflush(stdin);
+gets(productoNuevo.nombre);
+
+printf("Precio de Venta:\n");
+fflush(stdin);
+scanf("%i",&productoNuevo.precio);
+
+printf("Costo de produccion:\n"); //Este por ahi despues lo cambiamos por una funcion de calculo de costos.
+fflush(stdin);
+scanf("%i",&productoNuevo.costo);
+
+return productoNuevo;
 }
 
