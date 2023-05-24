@@ -99,3 +99,4 @@ scanf("%i",&productoNuevo.costo);
 return productoNuevo;
 }
 
+
