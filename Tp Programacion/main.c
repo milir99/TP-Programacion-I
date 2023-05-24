@@ -20,9 +20,6 @@ do{
     printf(" 9.\n");
     printf(" 10.\n");
 
-
-
-
     fflush(stdin);
     scanf("%i",&eleccion);
     switch(eleccion)
@@ -54,3 +51,4 @@ do{
 }
     } while (eleccion != 0);
 }
+
