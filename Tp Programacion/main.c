@@ -51,4 +51,4 @@ do{
 }
     } while (eleccion != 0);
 }
-
+// datos de un producto busqueda por nombre
