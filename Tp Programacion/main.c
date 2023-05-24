@@ -93,6 +93,7 @@ scanf("%c",&eleccion);
 
 }
 
+
 producto NuevoProducto(){
 
 producto productoNuevo;
@@ -115,5 +116,6 @@ scanf("%i",&productoNuevo.costo);
 
 return productoNuevo;
 }
+
 
 
