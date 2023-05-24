@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "pila.h"
 #include <string.h>
+//NO
 //HOLA
 int main()
 {
