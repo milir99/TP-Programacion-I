@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "pila.h"
 #include <string.h>
-//NO
-//HOLA
+
 int main()
 {
 int eleccion;
@@ -53,7 +52,5 @@ do{
     } while (eleccion != 0);
 }
 
-//holis
 
-// datos de un producto busqueda por nombre
 
