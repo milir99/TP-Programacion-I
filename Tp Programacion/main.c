@@ -67,6 +67,10 @@ do{
             break;
         case 10:
             break;
+        default:
+            printf("Esa opcion no existe\n");
+            break;
+
 
 }
 
