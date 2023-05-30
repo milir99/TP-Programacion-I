@@ -1,5 +1,6 @@
 # Programacion
 trabajo practico programacion 1
+-Edicion de algun dato del producto
 
 -Print datos de un producto busqueda por nombre (o hacemos codigo de producto?)
 
