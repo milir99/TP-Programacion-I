@@ -90,20 +90,23 @@ FILE *arch;
 arch = fopen(archivito,"ab");
 
 if(arch != NULL){
-while(eleccion == 's'){
 
-NuevoProducto(aux);
-fwrite(&aux, sizeof(producto), 1, arch);
+  while(eleccion == 's'){
 
-printf("si desea seguir cargando escriba 's'\n");
-fflush(stdin);
-scanf("%c",&eleccion);
+   NuevoProducto(aux);
+   fwrite(&aux, sizeof(producto), 1, arch);
+
+   printf("si desea seguir cargando escriba 's'\n");
+   fflush(stdin);
+   scanf("%c",&eleccion);
 
  }
-fclose(arch);
-  }
 
-    }
+fclose(arch);
+
+   }
+
+     }
 
 void NuevoProducto(producto productoNuevo){ // cargar un producto
 
@@ -126,6 +129,7 @@ scanf("%f",&productoNuevo.costo);
 printf("Cantidad de producto en stock:\n");
 fflush(stdin);
 scanf("%i",&productoNuevo.cantidad);
+
 }
 
 
