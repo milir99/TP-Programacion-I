@@ -86,7 +86,6 @@ char eleccion = 's';
 producto aux;
 FILE *arch;
 
-
 arch = fopen(archivito,"ab");
 
 if(arch != NULL){
