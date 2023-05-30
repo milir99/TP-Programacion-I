@@ -14,6 +14,9 @@ float costo;
 
 void CargarProducto(char archivito[]);
 producto NuevoProducto();
+void mostrarProductos(char archivito[]);
+void mostrarUnProducto( producto aux);
+
 
 int main()
 {
@@ -26,8 +29,8 @@ do{
     printf("\nIngrese la opcion que desea realizar \n");
     printf(" 0. Terminar el programa\n");
     printf(" 1. Cargar un producto\n");
-    printf(" 2.\n");
-    printf(" 3.\n");
+    printf(" 2. \n");
+    printf(" 3. \n");
     printf(" 4. \n");
     printf(" 5.\n");
     printf(" 6.\n");
@@ -76,8 +79,10 @@ do{
 }
 
     } while (eleccion != 0);
+    return 0;
 
 }
+
 
 
 void CargarProducto(char archivito[]){
@@ -127,5 +132,36 @@ scanf("%f",&productoNuevo.costo);
 
 return productoNuevo;
 }
+//funcion para mostrar TODOS los productos
+void mostrarProductos(char archivito[])
+{
+producto aux;
+FILE *arch;
 
+arch=fopen(archivito,"rb");
 
+if(arch!=NULL)
+{
+    while(!feof(arch))
+    {
+        fread(&aux,sizeof(producto),1,arch);
+        if(!feof(arch))
+    {
+    mostrarUnProducto(aux);
+    }
+    fclose(arch);
+}
+}
+}
+
+void mostrarUnProducto ( producto aux)
+{
+
+    puts("\n-----------------------------------------------\n");
+    printf("El codigo del producto es: %i\n",aux.codigo);
+    printf("El nombre del producto es: %s\n",aux.nombre);
+    printf("El precio del producto es: %.2f\n",aux.precio);
+    printf("El costo del producto es: %.2f\n",aux.costo);
+    printf("El stock del producto es: %i\n",aux.cantidad);
+    puts("\n-----------------------------------------------\n");
+}
