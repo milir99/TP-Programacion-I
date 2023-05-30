@@ -9,11 +9,12 @@ int codigo;
 char nombre[20];
 float precio;
 float costo;
+int cantidad;
 
 }producto;
 
 void CargarProducto(char archivito[]);
-producto NuevoProducto();
+void NuevoProducto(producto productoNuevo);
 
 int main()
 {
@@ -68,7 +69,7 @@ do{
         case 10:
             break;
         default:
-            if (eleccion!= 0){
+            if (eleccion != 0){
             printf("Esa opcion no existe\n");
             }
             break;
@@ -91,7 +92,7 @@ arch = fopen(archivito,"ab");
 if(arch != NULL){
 while(eleccion == 's'){
 
-producto aux = NuevoProducto();
+NuevoProducto(aux);
 fwrite(&aux, sizeof(producto), 1, arch);
 
 printf("si desea seguir cargando escriba 's'\n");
@@ -104,9 +105,7 @@ fclose(arch);
 
     }
 
-producto NuevoProducto(){
-
-producto productoNuevo;
+void NuevoProducto(producto productoNuevo){ // cargar un producto
 
 printf("Codigo de producto:\n");
 fflush(stdin);
@@ -124,7 +123,9 @@ printf("Costo de produccion:\n"); //Este por ahi despues lo cambiamos por una fu
 fflush(stdin);
 scanf("%f",&productoNuevo.costo);
 
-return productoNuevo;
+printf("Cantidad de producto en stock:\n");
+fflush(stdin);
+scanf("%i",&productoNuevo.cantidad);
 }
 
 
