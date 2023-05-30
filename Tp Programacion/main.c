@@ -7,24 +7,24 @@ typedef struct {
 
 int codigo;
 char nombre[20];
-int precio;
-int costo;
+float precio;
+float costo;
 
 }producto;
 
-void CargarProducto(producto arr[],int validos,int *cantProductos);
+void CargarProducto(char archivito[]);
 producto NuevoProducto();
 
 int main()
 {
-producto productos[100];
-int cantProductos = 0;
+
+char nombreArchivo[] = "Productos.bin";
 int eleccion;
 
 
 do{
     printf("\nIngrese la opcion que desea realizar \n");
-    printf(" 0.Terminar el programa\n");
+    printf(" 0. Terminar el programa\n");
     printf(" 1. Cargar un producto\n");
     printf(" 2.\n");
     printf(" 3.\n");
@@ -42,7 +42,7 @@ do{
     switch(eleccion)
     {
         case 1:
-            CargarProducto(productos,100,&cantProductos);
+            CargarProducto(nombreArchivo);
 
 
             break;
@@ -68,7 +68,9 @@ do{
         case 10:
             break;
         default:
+            if (eleccion!= 0){
             printf("Esa opcion no existe\n");
+            }
             break;
 
 }
@@ -78,24 +80,30 @@ do{
 }
 
 
-void CargarProducto(producto arr[],int validos,int *cantProductos){
+void CargarProducto(char archivito[]){
 
 char eleccion = 's';
+producto aux;
+FILE *arch;
 
-while(*cantProductos<validos && eleccion == 's'){
 
-arr[*cantProductos] = NuevoProducto();
+arch = fopen(archivito,"ab");
 
-*cantProductos++;
+if(arch != NULL){
+while(eleccion == 's'){
+
+producto aux = NuevoProducto();
+fwrite(&aux, sizeof(producto), 1, arch);
 
 printf("si desea seguir cargando escriba 's'\n");
 fflush(stdin);
 scanf("%c",&eleccion);
 
-}
+ }
+fclose(arch);
+  }
 
-}
-
+    }
 
 producto NuevoProducto(){
 
@@ -111,14 +119,13 @@ gets(productoNuevo.nombre);
 
 printf("Precio de Venta:\n");
 fflush(stdin);
-scanf("%i",&productoNuevo.precio);
+scanf("%f",&productoNuevo.precio);
 
 printf("Costo de produccion:\n"); //Este por ahi despues lo cambiamos por una funcion de calculo de costos.
 fflush(stdin);
-scanf("%i",&productoNuevo.costo);
+scanf("%f",&productoNuevo.costo);
 
 return productoNuevo;
 }
-
 
 
