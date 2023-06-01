@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1685592819 source:c:\users\propietario\documents\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+
+1685385088 c:\users\propietario\documents\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
