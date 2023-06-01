@@ -156,7 +156,7 @@ void CargarFichaStock(char rutaArchivo[])
 
             printf("si desea seguir cargando escriba 's'\n");
             fflush(stdin);
-            scanf(" %c ",&eleccion);
+            scanf("%c",&eleccion);
 
 
         }
@@ -171,7 +171,7 @@ void cargastock(stock *aux)
 
     printf("Fecha(00/00/0000):\n");
     fflush(stdin);
-    scanf("%s",&aux->fecha);
+    scanf("%s",aux->fecha);
 
     printf("Nombre del producto:\n");
     fflush(stdin);
@@ -209,6 +209,7 @@ void mostrarProductos(char archivito[])
         fclose(arch);
     }
 }
+
 //Funcion para mostrar de aun producto
 void mostrarUnProducto ( producto aux)
 {
