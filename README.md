@@ -7,10 +7,16 @@ Cargar productos-- void CargarProducto(char archivito[]);
 funcion cargar un  producto-- void NuevoProducto(producto productoNuevo);
 mostrar productos -- void mostrarProductos(char archivito[]);
 funcion mostrar un producto -- void mostrarUnProducto( producto aux);
+estrucrtura stock
+Cargar stock-- 
+funcion cargar un  cambio de stock-- 
+mostrar cambio de stock -- 
+funcion mostrar un cambio de stock -- 
+
 ---------------------------------
 Estructuras:
-Productos
-Stock (cantidad, fecha, producto,precio)
+Productos DONE
+Stock (cantidad, fecha, producto,precio)DONE
 Funciones:
 -Ordenar por : Codigo
               Nombre
