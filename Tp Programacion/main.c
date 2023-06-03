@@ -165,13 +165,13 @@ void CargarFichaStock(char rutaArchivo[])
 }
 void cargastock(stock *aux)
 {
-    printf("Tipo de accion Egreso o Ingreso:\n");
-    fflush(stdin);
-    scanf("%s",&aux->accion);
-
     printf("Fecha(00/00/0000):\n");
     fflush(stdin);
-    scanf("%s",aux->fecha);
+    gets(aux->fecha);
+
+    printf("Tipo de accion Egreso o Ingreso:\n");
+    fflush(stdin);
+    gets(aux->accion);
 
     printf("Nombre del producto:\n");
     fflush(stdin);
@@ -215,10 +215,10 @@ void mostrarUnProducto ( producto aux)
 {
 
     puts("\n-----------------------------------------------\n");
-    printf("El codigo del producto es: %i\n",aux.codigo);
-    printf("El nombre del producto es: %s\n",aux.nombre);
-    printf("El precio del producto es: %.2f\n",aux.precio);
-    printf("El stock del producto es: %i\n",aux.cantidad);
+    printf("Codigo del producto: %i\n",aux.codigo);
+    printf("Nombre: %s\n",aux.nombre);
+    printf("Precio de venta: %.2f\n",aux.precio);
+    printf("Stock: %i\n",aux.cantidad);
     puts("\n-----------------------------------------------\n");
 }
 // cargar cantidad deseada de productos
