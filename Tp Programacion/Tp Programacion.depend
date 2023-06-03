@@ -9,3 +9,13 @@
 	<stdio.h>
 	<malloc.h>
 
+1685769095 source:c:\users\valentin\documents\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+
+1684988378 c:\users\valentin\documents\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
