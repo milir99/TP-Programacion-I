@@ -7,7 +7,7 @@ typedef struct
 {
 
     int codigo;
-    char nombre[100];
+    char nombre[30];
     float precio;
     int cantidad;
 
@@ -15,9 +15,9 @@ typedef struct
 
 typedef struct
 {
-    char accion[10];// (I O E) (ingreso o egreso)
+    char accion;// (I O E) (ingreso o egreso)
     char fecha[11]; //(01/01/2000);
-    char nombre [100];
+    char nombre [30];
     float precio;
     int cantidad;
 } stock ;
@@ -25,10 +25,10 @@ typedef struct
 void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo);
 void mostrarProductos(char archivito[]);
-void mostrarUnProducto( producto aux);
+void mostrarUnProducto(producto aux);
 void cargastock(stock *aux);
 void CargarFichaStock(char rutaArchivo[]);
-void mostrarUnCambioStock ( stock aux);
+void mostrarUnCambioStock (stock aux);
 void mostrarCambioStock(char rutaArchivo[]);
 
 
@@ -46,7 +46,7 @@ int main()
         printf(" 1. Cargar un producto \n");
         printf(" 2. cargar ficha de stock \n");
         printf(" 3. mostrar productos y archivo de stock\n");
-        printf(" 4. \n");
+        printf(" 4.\n");
         printf(" 5.\n");
         printf(" 6.\n");
         printf(" 7.\n");
@@ -91,7 +91,7 @@ int main()
         default:
             if (eleccion != 0)
             {
-                printf("Esa opcion no existe\n");
+                printf("Esa funcion no existe\n");
             }
             break;
 
@@ -125,12 +125,12 @@ void mostrarCambioStock(char rutaArchivo[])
     }
 }
 //Funcion para mostrar stock
-void mostrarUnCambioStock ( stock aux)
+void mostrarUnCambioStock (stock aux)
 {
 
     puts("\n-----------------------------------------------\n");
     printf("FECHA: %s\n",aux.fecha);
-    printf("Se realizo un: %s\n",aux.accion);
+    printf("Se realizo un: %c\n",aux.accion);
     printf("Producto: %s\n",aux.nombre);
     printf("Precio: %f\n",aux.precio);
     printf("cantidad: %i\n",aux.cantidad);
@@ -171,7 +171,7 @@ void cargastock(stock *aux)
 
     printf("Tipo de accion Egreso o Ingreso:\n");
     fflush(stdin);
-    gets(aux->accion);
+    scanf("%c",&aux->accion);
 
     printf("Nombre del producto:\n");
     fflush(stdin);
@@ -179,7 +179,7 @@ void cargastock(stock *aux)
 
     printf("Precio:\n");
     fflush(stdin);
-    scanf("%f",&aux->precio);
+    scanf("%f.2",&aux->precio);
 
     printf("Cantidad:\n");
     fflush(stdin);
@@ -211,9 +211,8 @@ void mostrarProductos(char archivito[])
 }
 
 //Funcion para mostrar de aun producto
-void mostrarUnProducto ( producto aux)
+void mostrarUnProducto (producto aux)
 {
-
     puts("\n-----------------------------------------------\n");
     printf("Codigo del producto: %i\n",aux.codigo);
     printf("Nombre: %s\n",aux.nombre);
