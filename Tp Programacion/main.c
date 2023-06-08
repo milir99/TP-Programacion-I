@@ -40,8 +40,11 @@ void ordenarPornombre (char rutaArchivo[]);                     //por nombre
 void ordenacionSeleccionCantidad (producto arr[], int validos);
 int posicionMenorCantidad (producto arr[], int pos, int validos);
 void ordenarPorCantidad (char rutaArchivo[]);                   // por cantidad
-void cambiar (producto *aux);
-void modificarRegistro(char rutaArchivo[], char nombre[]);
+void cambiarProducto(producto *aux);
+void modificarDatosProducto(char rutaArchivo[], char nombre[]);
+void cambiarStock (stock *aux);
+void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
+
 
 
 
@@ -51,7 +54,7 @@ int main()
     int eleccion;
     int Ordenarpor=0;
     char nombre[30];
-
+    char fecha[30];
 
     do
     {
@@ -61,8 +64,8 @@ int main()
         printf(" 2. cargar ficha de stock \n");
         printf(" 3. mostrar productos y archivo de stock\n");
         printf(" 4. ordenar lista de productos\n");
-        printf(" 5. cambiar un dato\n");
-        printf(" 6.\n");
+        printf(" 5. cambiar un dato del producto\n");
+        printf(" 6. cambiar datos de la ficha de stock\n");
         printf(" 7.\n");
         printf(" 8.\n");
         printf(" 9.\n");
@@ -125,10 +128,17 @@ int main()
             printf("Ingrese el nombre del producto al cual desea cambiarle un dato.\n");
             fflush(stdin);
             gets(nombre);
-           modificarRegistro("productos.bin", nombre);
+            modificarDatosProducto("productos.bin", nombre);
 
             break;
         case 6:
+            printf("Ingrese la fecha ingresada en la ficha de stock.\n");
+            fflush(stdin);
+            gets(fecha);
+            printf("Ingrese el producto.\n");
+            fflush(stdin);
+            gets(nombre);
+            modificarDatosStock("fichastock.bin", nombre,fecha );
             break;
         case 7:
             break;
@@ -152,14 +162,98 @@ int main()
     return 0;
 
 }
-//fUNCION PARA CAMBIAR CIERTO DATO
-void modificarRegistro(char rutaArchivo[], char nombre[])
+//fUNCION PARA CAMBIAR CIERTO DATO EN STOCK CARGADO
+void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] )
+{
+    FILE *arch;
+    stock aux;
+
+    arch = fopen(rutaArchivo, "r+b");
+    if (arch == NULL)
+    {
+        printf("Error al abrir el archivo\n");
+        return;
+    }
+
+    while (fread(&aux, sizeof(stock), 1, arch) == 1)
+    {
+        if (strcasecmp(nombre, aux.nombre) == 0 && strcasecmp(fecha, aux.fecha) == 0)
+        {
+            cambiarStock(&aux);
+            fseek(arch, -sizeof(stock), SEEK_CUR);
+            fwrite(&aux, sizeof(stock), 1, arch);
+            printf("Registro modificado exitosamente.\n");
+            break;
+        }
+        else
+        {
+            printf("No se encontro esa fecha y producto en el archivo.\n");
+            break;
+        }
+    }
+
+    fclose(arch);
+}
+
+
+void cambiarStock(stock *aux)
+{
+    int eleccion;
+
+    printf("\nIngrese el numero de la opcion que desea cambiar o 0 para terminar \n");
+    printf(" 1.Fecha.\n");
+    printf(" 2.Accion.\n");
+    printf(" 3.Nombre producto.\n");
+    printf(" 4.Precio.\n");
+    printf(" 5.Cantidad.\n");
+    fflush(stdin);
+    scanf("%i",&eleccion);
+    printf("Modificando:\n");
+    switch (eleccion)
+    {
+    case 1:
+        printf("Fecha:\n");
+        fflush(stdin);
+        gets(aux->fecha);
+        break;
+    case 2:
+        printf("Accion(I O E): \n");
+        fflush(stdin);
+        scanf("%c", &aux->accion);
+        break;
+    case 3:
+        printf("Nombre producto: \n");
+        fflush(stdin);
+        gets(aux->nombre);
+        break;
+    case 4:
+        printf("Precio: \n");
+        fflush(stdin);
+        scanf("%f",&aux->precio);
+        break;
+    case 5:
+        printf("Cantidad: \n");
+        fflush(stdin);
+        scanf("%i", &aux->cantidad);
+        break;
+
+
+    }
+
+
+}
+
+
+
+//fUNCION PARA CAMBIAR CIERTO DATO EN STOCK CARGADO
+void modificarDatosProducto(char rutaArchivo[], char nombre[])
 {
     FILE *arch;
     producto aux;
 
     arch = fopen(rutaArchivo, "r+b");
-    if (arch == NULL) {
+    if (arch == NULL)
+    {
         printf("Error al abrir el archivo\n");
         return;
     }
@@ -168,7 +262,7 @@ void modificarRegistro(char rutaArchivo[], char nombre[])
     {
         if (strcasecmp(nombre, aux.nombre) == 0)
         {
-            cambiar(&aux);
+            cambiarProducto(&aux);
             fseek(arch, -sizeof(producto), SEEK_CUR);  // Mover el puntero de lectura/escritura al inicio del registro
             fwrite(&aux, sizeof(producto), 1, arch);
             printf("Registro modificado exitosamente.\n");
@@ -180,8 +274,9 @@ void modificarRegistro(char rutaArchivo[], char nombre[])
 }
 
 
-void cambiar (producto *aux)
-{  int eleccion;
+void cambiarProducto(producto *aux)
+{
+    int eleccion;
 
     printf("\nIngrese el numero de la opcion que desea cambiar o 0 para terminar \n");
     printf(" 1.Codigo.\n");
@@ -190,29 +285,29 @@ void cambiar (producto *aux)
     fflush(stdin);
     scanf("%i",&eleccion);
     switch (eleccion)
-        {
+    {
     case 1:
         printf("Modificando Codigo\n");
         fflush(stdin);
         scanf("%i", &aux->codigo);
         break;
     case 2:
-         printf("Modificando Nombre\n");
+        printf("Modificando Nombre\n");
         fflush(stdin);
         gets(aux->nombre);
         break;
     case 3:
-         printf("Modificando precio\n");
+        printf("Modificando precio\n");
         fflush(stdin);
         scanf("%f",&aux->precio);
         break;
     case 4:
-         printf("Modificando cantidad\n");
+        printf("Modificando cantidad\n");
         fflush(stdin);
         scanf("%i", &aux->cantidad);
         break;
 
-        }
+    }
 
 
 }
