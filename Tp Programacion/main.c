@@ -26,7 +26,7 @@ void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo);
 void mostrarProductos(char archivito[]);
 void mostrarUnProducto(producto aux);
-void cargastock(stock *aux);
+void cargaStock(stock *aux);
 void CargarFichaStock(char rutaArchivo[]);
 void mostrarUnCambioStock (stock aux);
 void mostrarCambioStock(char rutaArchivo[]);
@@ -36,7 +36,7 @@ int posicionMenorCodigo (producto arr[], int pos, int validos);
 void ordenarPorCodigo (char rutaArchivo[]);                     // por codigo
 int posicionMenorNombre (producto arr[], int pos, int validos);
 void ordenacionSeleccionNombre (producto arr[], int validos);
-void ordenarPornombre (char rutaArchivo[]);                     //por nombre
+void ordenarPorNombre (char rutaArchivo[]);                     //por nombre
 void ordenacionSeleccionCantidad (producto arr[], int validos);
 int posicionMenorCantidad (producto arr[], int pos, int validos);
 void ordenarPorCantidad (char rutaArchivo[]);                   // por cantidad
@@ -52,7 +52,7 @@ int main()
 {
 
     int eleccion;
-    int Ordenarpor=0;
+    int ordenarPor=0;
     char nombre[30];
     char fecha[30];
 
@@ -96,8 +96,8 @@ int main()
             printf(" 2. Nombre.\n");
             printf(" 3. Cantidad.\n");
             fflush(stdin);
-            scanf("%i",&Ordenarpor);
-            switch(Ordenarpor)
+            scanf("%i",&ordenarPor);
+            switch(ordenarPor)
             {
             case 1:
                 puts("----------------------------");
@@ -109,7 +109,7 @@ int main()
             case 2:
                 puts("----------------------------");
                 printf(" ORDENADO POR NOMBRE.\n");
-                ordenarPornombre ("productos.bin");
+                ordenarPorNombre ("productos.bin");
                 mostrarProductos("productos.bin");
                 puts("----------------------------");
                 break;
@@ -162,6 +162,44 @@ int main()
     return 0;
 
 }
+
+//Modificar cantidad de producto en stock
+void ModificarCantidadStock (char rutaArchivo[],stock *aux){
+
+int pocision = -1;
+
+producto auxProducto;
+
+pocision = buscarXnombre("productos.bin",aux.nombre);
+
+FILE *arch = fopen(rutaArchivo,"r+b");
+
+if(arch != NULL){
+
+
+    fseek(arch, pocision * sizeof(producto) , SEEK_SET);
+    fread(&producto,sizeof(producto),1,arch)
+
+       if (aux.accion == 'I'){
+
+           auxProducto.cantidad = auxProducto.cantidad + aux.cantidad;
+
+       }else{
+
+          auxProducto.cantidad = auxProducto.cantidad - aux.cantidad;
+
+       }
+
+}else{
+
+   printf("Error: el archivo esta vacio\n");
+
+}
+
+fclose(arch);
+
+}
+
 //fUNCION PARA CAMBIAR CIERTO DATO EN STOCK CARGADO
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] )
 {
@@ -195,7 +233,6 @@ void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] )
     fclose(arch);
 }
 
-
 void cambiarStock(stock *aux)
 {
     int eleccion;
@@ -217,7 +254,7 @@ void cambiarStock(stock *aux)
         gets(aux->fecha);
         break;
     case 2:
-        printf("Accion(I O E): \n");
+        printf("Accion('I' para ingreso O 'E' para egreso): \n");
         fflush(stdin);
         scanf("%c", &aux->accion);
         break;
@@ -242,8 +279,6 @@ void cambiarStock(stock *aux)
 
 
 }
-
-
 
 //fUNCION PARA CAMBIAR CIERTO DATO EN STOCK CARGADO
 void modificarDatosProducto(char rutaArchivo[], char nombre[])
@@ -272,7 +307,6 @@ void modificarDatosProducto(char rutaArchivo[], char nombre[])
 
     fclose(arch);
 }
-
 
 void cambiarProducto(producto *aux)
 {
@@ -312,10 +346,6 @@ void cambiarProducto(producto *aux)
 
 }
 
-
-
-
-
 // FUNCION PARA ORDENAR
 void archivoAarreglo(char rutaArchivo[], producto arr[],int *validos)
 {
@@ -339,6 +369,7 @@ void archivoAarreglo(char rutaArchivo[], producto arr[],int *validos)
         printf("Error al abrir el archivo");
     }
 }
+
 //ORDENAR POR Cantidad!
 void ordenarPorCantidad (char rutaArchivo[])
 {
@@ -365,6 +396,7 @@ void ordenarPorCantidad (char rutaArchivo[])
         printf("Error al abrir el archivo");
     }
 }
+
 int posicionMenorCantidad (producto arr[], int pos, int validos)
 {
     int menor = arr[pos].cantidad;
@@ -381,6 +413,7 @@ int posicionMenorCantidad (producto arr[], int pos, int validos)
     }
     return posmenor;
 }
+
 void ordenacionSeleccionCantidad (producto arr[], int validos)
 {
     int posmenor;
@@ -396,10 +429,8 @@ void ordenacionSeleccionCantidad (producto arr[], int validos)
     }
 }
 
-
-
 //ORDENAR POR NOMBRE!
-void ordenarPornombre (char rutaArchivo[])
+void ordenarPorNombre (char rutaArchivo[])
 {
     producto arr[30];
     producto aux;
@@ -425,7 +456,8 @@ void ordenarPornombre (char rutaArchivo[])
         printf("Error al abrir el archivo");
     }
 }
-void  ordenacionSeleccionNombre (producto arr[], int validos)
+
+void ordenacionSeleccionNombre (producto arr[], int validos)
 {
     int posmenor;
     producto aux;
@@ -439,6 +471,7 @@ void  ordenacionSeleccionNombre (producto arr[], int validos)
         i++;
     }
 }
+
 int posicionMenorNombre(producto arr[], int pos, int validos)
 {
     int posmenor = pos;
@@ -453,6 +486,7 @@ int posicionMenorNombre(producto arr[], int pos, int validos)
     }
     return posmenor;
 }
+
 //ORDENAR POR CODIGO!
 void ordenarPorCodigo (char rutaArchivo[])
 {
@@ -479,6 +513,7 @@ void ordenarPorCodigo (char rutaArchivo[])
         printf("Error al abrir el archivo");
     }
 }
+
 int posicionMenorCodigo (producto arr[], int pos, int validos)
 {
     int menor = arr[pos].codigo;
@@ -495,6 +530,7 @@ int posicionMenorCodigo (producto arr[], int pos, int validos)
     }
     return posmenor;
 }
+
 void ordenacionSeleccionCodigo (producto arr[], int validos)
 {
     int posmenor;
@@ -513,7 +549,6 @@ void ordenacionSeleccionCodigo (producto arr[], int validos)
 //Funcion para mostrar stock
 void mostrarUnCambioStock (stock aux)
 {
-
     puts("\n-----------------------------------------------\n");
     printf("FECHA: %s\n",aux.fecha);
     printf("Se realizo un: %c\n",aux.accion);
@@ -522,6 +557,7 @@ void mostrarUnCambioStock (stock aux)
     printf("cantidad: %i\n",aux.cantidad);
     puts("\n-----------------------------------------------\n");
 }
+
 //funcion para mostrar TODOS cambios de stock
 void mostrarCambioStock(char rutaArchivo[])
 {
@@ -560,8 +596,10 @@ void CargarFichaStock(char rutaArchivo[])
         while(eleccion == 's')
         {
 
-            cargastock(&aux);
+            cargaStock(&aux);
             fwrite(&aux, sizeof(stock), 1, arch);
+
+            ModificarCantidadStock(rutaArchivo,&aux);
 
             printf("si desea seguir cargando escriba 's'\n");
             fflush(stdin);
@@ -572,9 +610,10 @@ void CargarFichaStock(char rutaArchivo[])
         fclose(arch);
     }
 }
-void cargastock(stock *aux)
+
+void cargaStock(stock *aux)
 {
-    printf("Fecha(00/00/0000):\n");
+    printf("Fecha(MM/DD/YYYY):\n");
     fflush(stdin);
     gets(aux->fecha);
 
@@ -630,6 +669,7 @@ void mostrarUnProducto (producto aux)
     printf("Stock: %i\n",aux.cantidad);
     puts("\n-----------------------------------------------\n");
 }
+
 // cargar cantidad deseada de productos
 void CargarProducto(char rutaArchivo[])
 {
@@ -680,3 +720,8 @@ void NuevoProducto(producto *productoNuevo)
     scanf("%i",&productoNuevo->cantidad);
 
 }
+
+
+
+
+
