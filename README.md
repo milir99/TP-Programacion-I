@@ -12,15 +12,15 @@ Cargar stock--
 funcion cargar un  cambio de stock-- 
 mostrar cambio de stock -- 
 funcion mostrar un cambio de stock -- 
+-Ordenar por : Codigo
+              Nombre
+              Cantidad
 
 ---------------------------------
 Estructuras:
 Productos DONE
 Stock (cantidad, fecha, producto,precio)DONE
 Funciones:
--Ordenar por : Codigo
-              Nombre
-              Cantidad
 -Edicion de dato del producto.
 - Buscar producto : Codigo
                     Nombre
