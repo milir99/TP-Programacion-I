@@ -38,6 +38,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="pila.h" />
+		<Unit filename="productos.bin" />
 		<Extensions>
 			<code_completion />
 			<envvars />
