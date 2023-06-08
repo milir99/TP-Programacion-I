@@ -45,7 +45,11 @@ void modificarDatosProducto(char rutaArchivo[], char nombre[]);
 void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
 
-
+// mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
+int buscarXcodigo(char archivito[], int codigoBuscado);
+int buscarXcantidad(char nombreArchivo[], int cantidadBuscada);
+int buscarXnombre(char nombreArchivo[], char nombrebuscado[]);
+void mostrarXposicion(char nombreArchivo[], int posicion);
 
 
 int main()
@@ -53,6 +57,7 @@ int main()
 
     int eleccion;
     int ordenarPor=0;
+    int buscarPor=0;
     char nombre[30];
     char fecha[30];
 
@@ -66,7 +71,7 @@ int main()
         printf(" 4. ordenar lista de productos\n");
         printf(" 5. cambiar un dato del producto\n");
         printf(" 6. cambiar datos de la ficha de stock\n");
-        printf(" 7.\n");
+        printf(" 7. Buscar y mostrar productos\n");
         printf(" 8.\n");
         printf(" 9.\n");
         printf(" 10.\n");
@@ -141,7 +146,38 @@ int main()
             modificarDatosStock("fichastock.bin", nombre,fecha );
             break;
         case 7:
-            break;
+            printf(" Buscar por(:\n");
+            printf(" 1. Codigo.\n");
+            printf(" 2. Nombre.\n");
+            fflush(stdin);
+            scanf("%i",&buscarPor);
+            switch(buscarPor)
+            {
+            case 1:
+                puts("----------------------------");
+                printf(" BUSCAR POR CODIGO.\n");
+                int codigoBuscado;
+                int posicionCodigo;
+                printf(" Ingrese el codigo a buscar:\n");
+                fflush(stdin);
+                scanf("%i", &codigoBuscado);
+                posicionCodigo=buscarXcodigo("productos.bin",codigoBuscado);
+                mostrarXposicion("productos.bin",posicionCodigo);
+                puts("----------------------------");
+                break;
+            case 2:
+                puts("----------------------------");
+                printf(" BUSCAR POR NOMBRE.\n");
+                char nombreBuscado[20];
+                int posicionNombre;
+                printf(" Ingrese el nombre a buscar:\n");
+                fflush(stdin);
+                gets(nombreBuscado);
+                posicionNombre=buscarXnombre("productos.bin",nombreBuscado);
+                mostrarXposicion("productos.bin",posicionNombre);
+                puts("----------------------------");
+                break;
+            }
         case 8:
             break;
         case 9:
@@ -162,6 +198,7 @@ int main()
     return 0;
 
 }
+
 
 //Modificar cantidad de producto en stock
 void ModificarCantidadStock (char rutaArchivo[],stock *aux){
@@ -722,6 +759,83 @@ void NuevoProducto(producto *productoNuevo)
 }
 
 
+//BUSCAR POR CODIGO DEVUELVE POSICION
+int buscarXcodigo(char nombreArchivo[], int codigoBuscado)
+{
+    FILE *archi=fopen(nombreArchivo,"rb");
+                producto aux;
+                int flag=0;
+                int posicion=-1;
+    if(archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            if(!feof(archi))
+            {
+                fread(&aux,sizeof(producto),1,archi);
+                if(aux.codigo==codigoBuscado)
+                    {
+                    flag=1;
+                    break;
+                    }
+            }
+        }
 
+        if (flag==1)
+        {
+            posicion=ftell(archi)/sizeof(producto)-1;
+        }
+        fclose(archi);
 
+    }
+    return posicion;
+}
+
+//BUSCAR POR NOMBRE DEVUELVE POSICION
+int buscarXnombre(char nombreArchivo[], char nombreBuscado[])
+{
+    FILE *archi=fopen(nombreArchivo,"rb");
+                producto aux;
+                int flag=0;
+                int posicion=-1;
+    if(archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            if(!feof(archi))
+            {
+                fread(&aux,sizeof(producto),1,archi);
+                if(strcmp(aux.nombre,nombreBuscado)==0)
+                    {
+                    flag=1;
+                    break;
+                    }
+            }
+        }
+
+        if (flag==1)
+        {
+            posicion=ftell(archi)/sizeof(producto)-1;
+        }
+        fclose(archi);
+
+    }
+    return posicion;
+}
+
+//MOSTRAR POR POSICION
+void mostrarXposicion(char nombreArchivo[], int posicion)
+{
+    FILE *archi=fopen(nombreArchivo,"rb");
+    producto aux;
+
+    if(archi!=NULL)
+    {
+        fseek(archi,sizeof(producto)*posicion,SEEK_SET);
+        fread(&aux, sizeof(producto),1,archi);
+
+        mostrarUnProducto(aux);
+        fclose(archi);
+    }
+}
 
