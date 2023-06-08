@@ -201,21 +201,21 @@ int main()
 
 
 //Modificar cantidad de producto en stock
-void ModificarCantidadStock (char rutaArchivo[],stock *aux){
+void ModificarCantidadStock (char rutaArchivo[],stock aux){
 
-int pocision = -1;
-
+int posicion = -1;
 producto auxProducto;
+char nombreProducto[30];
+strcpy(nombreProducto,aux.nombre);
 
-pocision = buscarXnombre("productos.bin",aux.nombre);
+posicion = buscarXnombre("productos.bin",nombreProducto);
 
-FILE *arch = fopen(rutaArchivo,"r+b");
+FILE *arch = fopen("productos.bin","r+b");
 
 if(arch != NULL){
 
-
-    fseek(arch, pocision * sizeof(producto) , SEEK_SET);
-    fread(&producto,sizeof(producto),1,arch)
+    fseek(arch, posicion * sizeof(producto) , SEEK_SET);
+    fread(&auxProducto,sizeof(producto),1,arch);
 
        if (aux.accion == 'I'){
 
@@ -226,6 +226,8 @@ if(arch != NULL){
           auxProducto.cantidad = auxProducto.cantidad - aux.cantidad;
 
        }
+      fseek(arch, posicion * sizeof(producto) , SEEK_SET);
+      fwrite(&auxProducto,sizeof(producto),1,arch);
 
 }else{
 
@@ -636,7 +638,7 @@ void CargarFichaStock(char rutaArchivo[])
             cargaStock(&aux);
             fwrite(&aux, sizeof(stock), 1, arch);
 
-            ModificarCantidadStock(rutaArchivo,&aux);
+            ModificarCantidadStock(rutaArchivo,aux);
 
             printf("si desea seguir cargando escriba 's'\n");
             fflush(stdin);
@@ -715,7 +717,7 @@ void CargarProducto(char rutaArchivo[])
     producto aux;
     FILE *arch;
 
-    arch = fopen(rutaArchivo,"rb");
+    arch = fopen(rutaArchivo,"ab");
 
     if(arch != NULL)
     {
