@@ -44,6 +44,7 @@ void cambiarProducto(producto *aux);
 void modificarDatosProducto(char rutaArchivo[], char nombre[]);
 void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
+void RangoFechas (char rutaArchivo[],char nombresArchivos[100][30]);
 
 // mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -60,6 +61,7 @@ int main()
     int buscarPor=0;
     char nombre[30];
     char fecha[30];
+    char nombresArchivos[100][30];
 
     do
     {
@@ -179,6 +181,7 @@ int main()
                 break;
             }
         case 8:
+            RangoFechas ("fichastock.bin",nombresArchivos);
             break;
         case 9:
             break;
@@ -198,7 +201,57 @@ int main()
     return 0;
 
 }
+//datos de un determinado periodo
+void RangoFechas (char rutaArchivo[],char nombresArchivos[100][30]){
 
+int contador = 0;
+stock aux;
+char antigua[30];
+char reciente[30];
+char nuevoArchivo[30];
+char extension []=".bin";
+
+printf("Fecha mas antigua YYYY/MM/DD:\n");
+fflush(stdin);
+gets(antigua);
+
+printf("Fecha mas reciente YYYY/MM/DD:\n");
+fflush(stdin);
+gets(reciente);
+
+printf("Nombre del nuevo archivo\n");
+fflush(stdin);
+gets(nuevoArchivo);
+strcat(nuevoArchivo,extension);
+
+strcpy(nombresArchivos[contador],nuevoArchivo);
+printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
+contador++;
+
+
+FILE *arch = fopen(rutaArchivo,"rb");
+FILE *nuevoArch = fopen(nuevoArchivo,"ab");
+
+if (arch != NULL && nuevoArch == NULL){
+
+    while (fread(&aux, sizeof(stock), 1, arch) == 1){
+
+        fread(&aux,sizeof(stock),1,arch);
+
+           if (aux.fecha > antigua && aux.fecha < reciente){
+
+             fwrite(&aux,sizeof(stock),1,nuevoArch);
+
+           }
+
+
+    }
+fclose(arch);
+fclose(nuevoArch);
+
+}
+
+}
 
 //Modificar cantidad de producto en stock
 void ModificarCantidadStock (char rutaArchivo[],stock aux){
@@ -652,7 +705,7 @@ void CargarFichaStock(char rutaArchivo[])
 
 void cargaStock(stock *aux)
 {
-    printf("Fecha(MM/DD/YYYY):\n");
+    printf("Fecha(YYYY/MM/DD):\n");
     fflush(stdin);
     gets(aux->fecha);
 
