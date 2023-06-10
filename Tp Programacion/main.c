@@ -234,7 +234,7 @@ FILE *nuevoArch = fopen(nuevoArchivo,"ab");
 
 if (arch != NULL && nuevoArch == NULL){
 
-    while (fread(&aux, sizeof(stock), 1, arch) == 1){
+    while (fread(&aux, sizeof(stock), 1, arch) > 0){
 
         fread(&aux,sizeof(stock),1,arch);
 
@@ -243,7 +243,6 @@ if (arch != NULL && nuevoArch == NULL){
              fwrite(&aux,sizeof(stock),1,nuevoArch);
 
            }
-
 
     }
 fclose(arch);
