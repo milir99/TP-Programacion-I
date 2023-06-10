@@ -74,7 +74,7 @@ int main()
         printf(" 5. cambiar un dato del producto\n");
         printf(" 6. cambiar datos de la ficha de stock\n");
         printf(" 7. Buscar y mostrar productos\n");
-        printf(" 8.\n");
+        printf(" 8.Crear archivo con rangos\n");
         printf(" 9.\n");
         printf(" 10.\n");
 
@@ -180,6 +180,7 @@ int main()
                 puts("----------------------------");
                 break;
             }
+            break;
         case 8:
             RangoFechas ("fichastock.bin",nombresArchivos);
             break;
