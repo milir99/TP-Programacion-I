@@ -22,6 +22,8 @@ typedef struct
     int cantidad;
 } stock ;
 
+char nombresArchivos[100][30];
+
 void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo);
 void mostrarProductos(char archivito[]);
@@ -44,7 +46,8 @@ void cambiarProducto(producto *aux);
 void modificarDatosProducto(char rutaArchivo[], char nombre[]);
 void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
-void RangoFechas (char rutaArchivo[],char nombresArchivos[100][30]);
+void RangoFechas (char rutaArchivo[]);
+void CrearArchivo (char nuevoArchivo[30]);
 
 // mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -55,13 +58,12 @@ void mostrarXposicion(char nombreArchivo[], int posicion);
 
 int main()
 {
-
     int eleccion;
     int ordenarPor=0;
     int buscarPor=0;
     char nombre[30];
     char fecha[30];
-    char nombresArchivos[100][30];
+
 
     do
     {
@@ -181,7 +183,8 @@ int main()
                 break;
             }
         case 8:
-            RangoFechas ("fichastock.bin",nombresArchivos);
+            //while
+            RangoFechas ("fichastock.bin");
             break;
         case 9:
             break;
@@ -201,15 +204,31 @@ int main()
     return 0;
 
 }
-//datos de un determinado periodo
-void RangoFechas (char rutaArchivo[],char nombresArchivos[100][30]){
+//funcion matriz a archivo
+
+//funcion CrearArchivo
+void CrearArchivo (char nuevoArchivo[30]){
 
 int contador = 0;
+char extension []=".bin";
+
+printf("Nombre del nuevo archivo\n");
+fflush(stdin);
+gets(nuevoArchivo);
+strcat(nuevoArchivo,extension);
+
+strcpy(nombresArchivos[contador],nuevoArchivo);
+printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
+
+}
+//datos de un determinado periodo
+void RangoFechas (char rutaArchivo[]){
+
 stock aux;
 char antigua[30];
 char reciente[30];
 char nuevoArchivo[30];
-char extension []=".bin";
+char eleccion = 's';
 
 printf("Fecha mas antigua YYYY/MM/DD:\n");
 fflush(stdin);
@@ -219,34 +238,37 @@ printf("Fecha mas reciente YYYY/MM/DD:\n");
 fflush(stdin);
 gets(reciente);
 
-printf("Nombre del nuevo archivo\n");
+printf("Desea guardar el rango en un archivo?\n");
 fflush(stdin);
-gets(nuevoArchivo);
-strcat(nuevoArchivo,extension);
+scanf("%c",&eleccion);
+if(eleccion == 's'){
 
-strcpy(nombresArchivos[contador],nuevoArchivo);
-printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
-contador++;
+   CrearArchivo(nuevoArchivo);
 
+}
 
 FILE *arch = fopen(rutaArchivo,"rb");
-FILE *nuevoArch = fopen(nuevoArchivo,"ab");
 
-if (arch != NULL && nuevoArch == NULL){
+if (arch != NULL){
 
     while (fread(&aux, sizeof(stock), 1, arch) > 0){
 
-        fread(&aux,sizeof(stock),1,arch);
-
            if (aux.fecha > antigua && aux.fecha < reciente){
 
-             fwrite(&aux,sizeof(stock),1,nuevoArch);
+              mostrarUnCambioStock (aux);
+
+                 if(eleccion == 's'){
+                 FILE *nuevoArch = fopen(nuevoArchivo,"ab");
+                 fwrite(&aux,sizeof(stock),1,nuevoArch);
+                 fclose(nuevoArch);
+                 }
 
            }
 
     }
+
 fclose(arch);
-fclose(nuevoArch);
+
 
 }
 
@@ -811,7 +833,6 @@ void NuevoProducto(producto *productoNuevo)
     scanf("%i",&productoNuevo->cantidad);
 
 }
-
 
 //BUSCAR POR CODIGO DEVUELVE POSICION
 int buscarXcodigo(char nombreArchivo[], int codigoBuscado)
