@@ -22,6 +22,9 @@ typedef struct
     int cantidad;
 } stock ;
 
+char nombresArchivos[100][30];
+
+
 void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo);
 void mostrarProductos(char archivito[]);
@@ -44,7 +47,10 @@ void cambiarProducto(producto *aux);
 void modificarDatosProducto(char rutaArchivo[], char nombre[]);
 void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
-void RangoFechas (char rutaArchivo[],char nombresArchivos[100][30]);
+void RangoFechas (char rutaArchivo[]);
+void CrearArchivo (char nuevoArchivo[30]);
+int contarMatriz();
+void MatrizAArchivo();
 
 // mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -57,15 +63,14 @@ void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
 
 int main()
 {
-
     int eleccion;
     int ordenarPor=0;
     int buscarPor=0;
     char nombre[30];
     char fecha[30];
-    char nombresArchivos[100][30];
     Pila pilaOrdenadora;
     inicpila(&pilaOrdenadora);
+
     do
     {
         printf("\nIngrese la opcion que desea realizar \n");
@@ -196,9 +201,12 @@ int main()
             }
             break;
         case 8:
-            RangoFechas ("fichastock.bin",nombresArchivos);
+            //while
+            RangoFechas ("fichastock.bin");
+
             break;
         case 9:
+
             break;
         case 10:
             break;
@@ -216,15 +224,69 @@ int main()
     return 0;
 
 }
-//datos de un determinado periodo
-void RangoFechas (char rutaArchivo[],char nombresArchivos[100][30]){
 
+//funcion matriz a archivo
+void MatrizAArchivo(){
+int validos = contarMatriz();
+int i=0;
+FILE *arch = fopen("ArchivoRangos.bin","ab");
+
+for( i = 0;i<validos;i++){
+   fwrite(&nombresArchivos[i],sizeof(char),1,arch);
+}
+
+fclose(arch);
+
+}
+
+//funcion contar elementos matriz
+int contarMatriz(){
+
+int flag = 0;
 int contador = 0;
+int i = 0;
+while(flag == 0){
+
+  if(strlen(nombresArchivos[i])>0){
+
+    contador++;
+
+  }else{
+
+     flag = 1;
+
+  }
+
+  i++;
+
+}
+return contador;
+}
+
+//funcion CrearArchivo
+void CrearArchivo (char nuevoArchivo[30]){
+int contadorMatriz = contarMatriz();
+char extension []=".bin";
+
+printf("Nombre del nuevo archivo\n");
+fflush(stdin);
+gets(nuevoArchivo);
+strcat(nuevoArchivo,extension);
+
+strcpy(nombresArchivos[contadorMatriz],nuevoArchivo);
+contadorMatriz++;
+
+printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
+
+}
+//datos de un determinado periodo
+void RangoFechas (char rutaArchivo[]){
+
 stock aux;
 char antigua[30];
 char reciente[30];
 char nuevoArchivo[30];
-char extension []=".bin";
+char eleccion = 's';
 
 printf("Fecha mas antigua YYYY/MM/DD:\n");
 fflush(stdin);
@@ -234,35 +296,37 @@ printf("Fecha mas reciente YYYY/MM/DD:\n");
 fflush(stdin);
 gets(reciente);
 
-printf("Nombre del nuevo archivo\n");
+printf("Desea guardar el rango en un archivo?\n");
 fflush(stdin);
-gets(nuevoArchivo);
-strcat(nuevoArchivo,extension);
+scanf("%c",&eleccion);
+if(eleccion == 's'){
 
-strcpy(nombresArchivos[contador],nuevoArchivo);
-printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
-contador++;
+   CrearArchivo(nuevoArchivo);
 
+}
 
 FILE *arch = fopen(rutaArchivo,"rb");
 FILE *nuevoArch = fopen(nuevoArchivo,"ab");
+if (arch != NULL){
 
-if (arch != NULL && nuevoArch == NULL){
-
-    while (fread(&aux, sizeof(stock), 1, arch) == 1){
-
-        fread(&aux,sizeof(stock),1,arch);
+    while (fread(&aux, sizeof(stock), 1, arch) > 0){
 
            if (aux.fecha > antigua && aux.fecha < reciente){
 
-             fwrite(&aux,sizeof(stock),1,nuevoArch);
+              mostrarUnCambioStock (aux);
+
+                 if(eleccion == 's'){
+
+                 fwrite(&aux,sizeof(stock),1,nuevoArch);
+
+                 }
 
            }
 
-
     }
-fclose(arch);
 fclose(nuevoArch);
+fclose(arch);
+
 
 }
 
@@ -826,7 +890,6 @@ void NuevoProducto(producto *productoNuevo)
     scanf("%i",&productoNuevo->cantidad);
 
 }
-
 
 //BUSCAR POR CODIGO DEVUELVE POSICION
 int buscarXcodigo(char nombreArchivo[], int codigoBuscado)
