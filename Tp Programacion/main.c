@@ -770,7 +770,7 @@ void mostrarProductos(char archivito[])
 void mostrarUnProducto (producto aux)
 {
     puts("\n-----------------------------------------------\n");
-    printf("Codigo del producto: %i\n",aux.codigo);
+    printf("Codigo del producto: %04i\n",aux.codigo);
     printf("Nombre: %s\n",aux.nombre);
     printf("Precio de venta: %.2f\n",aux.precio);
     printf("Stock: %i\n",aux.cantidad);
@@ -810,9 +810,8 @@ void CargarProducto(char rutaArchivo[])
 void NuevoProducto(producto *productoNuevo)
 {
 
-    printf("Codigo de producto:\n");
-    fflush(stdin);
-    scanf("%i",&productoNuevo->codigo);
+    printf("Codigo asignado al producto es: %04i\n", crearCodigo());
+
 
     printf("Nombre del producto:\n");
     fflush(stdin);
@@ -935,4 +934,31 @@ void imprimirPila(Pila *pilaOrdenadora)
         mostrarXposicion("productos.bin", posicionCodigo);
         desapilar(pilaOrdenadora);
     }
+}
+
+//FUNCION QUE CREA EL CODIGO
+int crearCodigo()
+{
+    int codigoNuevo;
+    producto aux;
+    ordenarPorCodigo("productos.bin");
+
+FILE *archi = fopen("productos.bin", "rb");
+    if (archi != NULL)
+    {
+        fseek(archi, 0, SEEK_END);
+        if (ftell(archi) == 0)
+        {
+                codigoNuevo = 1;
+        }
+        else
+        {
+                fseek(archi, -1 *sizeof(producto), SEEK_END);
+                fread(&aux, sizeof(producto), 1, archi);
+                codigoNuevo = aux.codigo + 1;
+         }
+    fclose(archi);
+    printf("%04i\n", codigoNuevo);
+    return codigoNuevo;
+}
 }

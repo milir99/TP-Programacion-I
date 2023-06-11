@@ -2,16 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="8" zoom_2="0">
 		<Cursor>
-<<<<<<< Updated upstream
-			<Cursor1 position="6518" topLine="184" />
-=======
-			<Cursor1 position="16062" topLine="134" />
->>>>>>> Stashed changes
+			<Cursor1 position="23558" topLine="934" />
 		</Cursor>
-		<Folding>
-			<Collapse line="205" />
-		</Folding>
 	</File>
 </CodeBlocks_layout_file>
