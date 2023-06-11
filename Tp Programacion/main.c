@@ -51,6 +51,7 @@ void RangoFechas (char rutaArchivo[]);
 void CrearArchivo (char nuevoArchivo[30]);
 int contarMatriz();
 void MatrizAArchivo();
+void mostrarArchivosRangos(char rutaArchivo[]);
 
 // mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -68,8 +69,10 @@ int main()
     int buscarPor=0;
     char nombre[30];
     char fecha[30];
+    char continuar = 's';
     Pila pilaOrdenadora;
     inicpila(&pilaOrdenadora);
+
 
     do
     {
@@ -201,9 +204,15 @@ int main()
             }
             break;
         case 8:
-            //while
+            continuar = 's';
+            while (continuar == 's'){
             RangoFechas ("fichastock.bin");
-
+            printf("Presione 's' si desea continuar buscando rangos\n");
+            fflush(stdin);
+            scanf("%c",&continuar);
+            }
+            MatrizAArchivo();
+            mostrarArchivosRangos("ArchivoRangos.bin");
             break;
         case 9:
 
@@ -224,7 +233,29 @@ int main()
     return 0;
 
 }
+//Funcion mostrar arhivo de strings
+void mostrarArchivosRangos(char rutaArchivo[]){
+    char aux[30];
+    FILE *arch =fopen(rutaArchivo,"rb");
 
+    if(arch!=NULL)
+    {
+        while(!feof(arch))
+        {
+            fread(&aux,sizeof(char),1,arch);
+            if(!feof(arch))
+            {
+                printf("%s\n",aux);
+
+            }
+
+        }
+
+    }
+fclose(arch);
+
+
+}
 //funcion matriz a archivo
 void MatrizAArchivo(){
 int validos = contarMatriz();
@@ -297,7 +328,7 @@ printf("Fecha mas reciente YYYY/MM/DD:\n");
 fflush(stdin);
 gets(reciente);
 
-printf("Desea guardar el rango en un archivo?\n");
+printf("presione 's' si desea guardar el rango en un archivo?\n");
 fflush(stdin);
 scanf("%c",&eleccion);
 if(eleccion == 's'){
