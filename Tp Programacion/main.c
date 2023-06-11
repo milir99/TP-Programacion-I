@@ -265,6 +265,7 @@ contadorMatriz++;
 printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
 
 }
+
 //datos de un determinado periodo
 void RangoFechas (char rutaArchivo[]){
 
