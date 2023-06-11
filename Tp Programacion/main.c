@@ -24,6 +24,7 @@ typedef struct
 
 char nombresArchivos[100][30];
 
+
 void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo);
 void mostrarProductos(char archivito[]);
@@ -48,6 +49,8 @@ void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
 void RangoFechas (char rutaArchivo[]);
 void CrearArchivo (char nuevoArchivo[30]);
+int contarMatriz();
+void MatrizAArchivo();
 
 // mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -186,8 +189,10 @@ int main()
         case 8:
             //while
             RangoFechas ("fichastock.bin");
+
             break;
         case 9:
+
             break;
         case 10:
             break;
@@ -205,12 +210,48 @@ int main()
     return 0;
 
 }
+
 //funcion matriz a archivo
+void MatrizAArchivo(){
+int validos = contarMatriz();
+int i=0;
+FILE *arch = fopen("ArchivoRangos.bin","ab");
+
+for( i = 0;i<validos;i++){
+   fwrite(&nombresArchivos[i],sizeof(char),1,arch);
+}
+
+fclose(arch);
+
+}
+
+//funcion contar elementos matriz
+int contarMatriz(){
+
+int flag = 0;
+int contador = 0;
+int i = 0;
+while(flag == 0){
+
+  if(strlen(nombresArchivos[i])>0){
+
+    contador++;
+
+  }else{
+
+     flag = 1;
+
+  }
+
+  i++;
+
+}
+return contador;
+}
 
 //funcion CrearArchivo
 void CrearArchivo (char nuevoArchivo[30]){
-
-int contador = 0;
+int contadorMatriz = contarMatriz();
 char extension []=".bin";
 
 printf("Nombre del nuevo archivo\n");
@@ -218,7 +259,9 @@ fflush(stdin);
 gets(nuevoArchivo);
 strcat(nuevoArchivo,extension);
 
-strcpy(nombresArchivos[contador],nuevoArchivo);
+strcpy(nombresArchivos[contadorMatriz],nuevoArchivo);
+contadorMatriz++;
+
 printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
 
 }
@@ -249,7 +292,7 @@ if(eleccion == 's'){
 }
 
 FILE *arch = fopen(rutaArchivo,"rb");
-
+FILE *nuevoArch = fopen(nuevoArchivo,"ab");
 if (arch != NULL){
 
     while (fread(&aux, sizeof(stock), 1, arch) > 0){
@@ -259,15 +302,15 @@ if (arch != NULL){
               mostrarUnCambioStock (aux);
 
                  if(eleccion == 's'){
-                 FILE *nuevoArch = fopen(nuevoArchivo,"ab");
+
                  fwrite(&aux,sizeof(stock),1,nuevoArch);
-                 fclose(nuevoArch);
+
                  }
 
            }
 
     }
-
+fclose(nuevoArch);
 fclose(arch);
 
 
