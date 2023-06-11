@@ -52,6 +52,8 @@ int buscarXcantidad(char nombreArchivo[], int cantidadBuscada);
 int buscarXnombre(char nombreArchivo[], char nombrebuscado[]);
 void mostrarXposicion(char nombreArchivo[], int posicion);
 
+void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
+
 
 int main()
 {
@@ -62,7 +64,8 @@ int main()
     char nombre[30];
     char fecha[30];
     char nombresArchivos[100][30];
-
+    Pila pilaOrdenadora;
+    inicpila(&pilaOrdenadora);
     do
     {
         printf("\nIngrese la opcion que desea realizar \n");
@@ -109,8 +112,19 @@ int main()
             case 1:
                 puts("----------------------------");
                 printf(" ORDENADO POR CODIGO.\n");
+                int ordenacionEleccion;
+                printf("Elija 1 para ordenar de mayor a menor o 0 para ordenar de menor a mayor");
+                fflush(stdin);
+                scanf("%i", ordenacionEleccion);
+                if(ordenacionEleccion==1)
+                {
                 ordenarPorCodigo ("productos.bin");
                 mostrarProductos("productos.bin");
+                }else{
+                ordenarPorCodigo("productos.bin");
+                pasarAPila("productos.bin", &pilaOrdenadora);
+                }
+
                 puts("----------------------------");
                 break;
             case 2:
@@ -895,3 +909,30 @@ void mostrarXposicion(char nombreArchivo[], int posicion)
     }
 }
 
+//PASAR DE ARCHIVO A PILA (UNA VEZ ORDENADO)
+void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora)
+{
+
+    FILE *archi=fopen(nombreArchivo,"rb");
+    producto aux;
+
+    if(archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&aux,sizeof(producto),1,archi);
+            apilar(&pilaOrdenadora,aux.codigo);
+        }
+fclose(archi);
+
+    }
+}
+void imprimirPila(Pila *pilaOrdenadora)
+{
+    while(!pilavacia(pilaOrdenadora))
+    {
+        int posicionCodigo=buscarXcodigo("productos.bin",tope(pilaOrdenadora));
+        mostrarXposicion("productos.bin", posicionCodigo);
+        desapilar(pilaOrdenadora);
+    }
+}
