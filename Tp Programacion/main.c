@@ -52,6 +52,8 @@ void CrearArchivo (char nuevoArchivo[30]);
 int contarMatriz();
 void MatrizAArchivo();
 void mostrarArchivosRangos(char rutaArchivo[]);
+int crearCodigo();
+
 
 // mi parte: buscar prod por codigo nombre y cantidad, funcion para pasar a una pila el precio de un articulo q ingreso su cantidad
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -121,9 +123,9 @@ int main()
                 puts("----------------------------");
                 printf(" ORDENADO POR CODIGO.\n");
                 int ordenacionEleccion;
-                printf("Elija 1 para ordenar de mayor a menor o 0 para ordenar de menor a mayor");
+                printf("Elija 1 para ordenar de mayor a menor o 0 para ordenar de menor a mayor\n");
                 fflush(stdin);
-                scanf("%i", ordenacionEleccion);
+                scanf("%i", &ordenacionEleccion);
                 if(ordenacionEleccion==1)
                 {
                 ordenarPorCodigo ("productos.bin");
@@ -212,10 +214,11 @@ int main()
             scanf("%c",&continuar);
             }
             MatrizAArchivo();
-            mostrarArchivosRangos("ArchivoRangos.bin");
+
             break;
         case 9:
 
+              mostrarArchivosRangos("ArchivoRangos.bin");
             break;
         case 10:
             break;
@@ -233,37 +236,48 @@ int main()
     return 0;
 
 }
+
+
 //Funcion mostrar arhivo de strings
 void mostrarArchivosRangos(char rutaArchivo[]){
-    char aux[30];
-    FILE *arch =fopen(rutaArchivo,"rb");
 
-    if(arch!=NULL)
-    {
-        while(!feof(arch))
-        {
-            fread(&aux,sizeof(char),1,arch);
-            if(!feof(arch))
-            {
-                printf("%s\n",aux);
+FILE* arch = fopen(rutaArchivo, "rb");
+int contador = 1;
 
-            }
-
-        }
-
+    if (arch == NULL) {
+        printf("No se pudo abrir el archivo\n");
+        return;
     }
-fclose(arch);
 
+    size_t longString;
+    char aux[100];
 
+    while (fread(&longString, sizeof(size_t), 1, arch) == 1) {
+        fread(aux, sizeof(char), longString, arch);
+        aux[longString] = '\0';
+        printf("%i:%s\n",contador, aux);
+        contador++;
+    }
+
+    fclose(arch);
 }
+
 //funcion matriz a archivo
 void MatrizAArchivo(){
 int validos = contarMatriz();
 int i=0;
+
 FILE *arch = fopen("ArchivoRangos.bin","ab");
 
-for( i = 0;i<validos;i++){
-   fwrite(&nombresArchivos[i],sizeof(char),1,arch);
+for(i=0;i<validos;i++){
+
+    size_t longString = strlen(nombresArchivos[i]);
+
+    fwrite(&longString, sizeof(size_t), 1, arch);
+    fwrite(nombresArchivos[i], sizeof(char), longString, arch);
+
+
+
 }
 
 fclose(arch);
@@ -276,7 +290,7 @@ int contarMatriz(){
 int flag = 0;
 int contador = 0;
 int i = 0;
-while(flag == 0){
+while(flag == 0 && i<100){
 
   if(strlen(nombresArchivos[i])>0){
 
@@ -291,7 +305,9 @@ while(flag == 0){
   i++;
 
 }
+
 return contador;
+
 }
 
 //funcion CrearArchivo
@@ -881,33 +897,36 @@ void CargarProducto(char rutaArchivo[])
     producto aux;
     FILE *arch;
 
-    arch = fopen(rutaArchivo,"ab");
 
-    if(arch != NULL)
-    {
 
-        while(eleccion == 's')
-        {
+  while(eleccion == 's')
+  {
+        arch = fopen(rutaArchivo,"ab");
 
-            NuevoProducto(&aux);
-            fwrite(&aux, sizeof(producto), 1, arch);
-            printf("si desea seguir cargando escriba 's'\n");
-            fflush(stdin);
-            scanf("%c",&eleccion);
+            if(arch != NULL)
+           {
 
-        }
+               NuevoProducto(&aux);
+               fwrite(&aux, sizeof(producto), 1, arch);
+               printf("si desea seguir cargando escriba 's'\n");
+               fflush(stdin);
+               scanf("%c",&eleccion);
 
-        fclose(arch);
+               fclose(arch);
+           }
 
-    }
+
+
+  }
 }
 
 // Cargar un producto
 void NuevoProducto(producto *productoNuevo)
 {
 
-    printf("Codigo asignado al producto es: %04i\n", crearCodigo());
 
+    productoNuevo->codigo = crearCodigo();
+    printf("Codigo asignado al producto es: %04i\n", productoNuevo->codigo);
 
     printf("Nombre del producto:\n");
     fflush(stdin);
@@ -1015,12 +1034,13 @@ void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora)
         while(!feof(archi))
         {
             fread(&aux,sizeof(producto),1,archi);
-            apilar(&pilaOrdenadora,aux.codigo);
+            apilar(pilaOrdenadora,aux.codigo);
         }
 fclose(archi);
 
     }
 }
+
 void imprimirPila(Pila *pilaOrdenadora)
 {
     while(!pilavacia(pilaOrdenadora))
@@ -1045,6 +1065,8 @@ FILE *archi = fopen("productos.bin", "rb");
         if (ftell(archi) == 0)
         {
                 codigoNuevo = 1;
+
+
         }
         else
         {
@@ -1052,8 +1074,11 @@ FILE *archi = fopen("productos.bin", "rb");
                 fread(&aux, sizeof(producto), 1, archi);
                 codigoNuevo = aux.codigo + 1;
          }
-    fclose(archi);
-    printf("%04i\n", codigoNuevo);
-    return codigoNuevo;
+
+
+
 }
+fclose(archi);
+printf("%04i\n", codigoNuevo);
+return codigoNuevo;
 }
