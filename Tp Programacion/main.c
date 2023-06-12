@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "pila.h"
 #include <string.h>
+#include <ctype.h>
+
 
 typedef struct
 {
@@ -16,7 +18,7 @@ typedef struct
 typedef struct
 {
     char accion;// (I O E) (ingreso o egreso)
-    char fecha[11]; //(01/01/2000);
+    char fecha[11]; //(9999/12/31);
     char nombre [30];
     float precio;
     int cantidad;
@@ -62,6 +64,7 @@ int buscarXnombre(char nombreArchivo[], char nombrebuscado[]);
 void mostrarXposicion(char nombreArchivo[], int posicion);
 
 void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
+void imprimirPila(Pila *pilaOrdenadora);
 
 
 int main()
@@ -74,7 +77,26 @@ int main()
     char continuar = 's';
     Pila pilaOrdenadora;
     inicpila(&pilaOrdenadora);
+    int ordenacionEleccion=0;;
+        // Definir el nombre de usuario y contraseña correctos
+    char usuarioCorrecto[] = "milagros";
+    char contraseniaCorrecta[] = "1234";
 
+
+    char usuario[20];
+    char contrasenia[20];
+    printf("Usuario: ");
+    scanf("%s", usuario);
+    printf("Contraseña: ");
+    scanf("%s", contrasenia);
+    if (strcmp(usuario, usuarioCorrecto) == 0 && strcmp(contrasenia, contraseniaCorrecta) == 0) {
+    printf("Bienvenido, %s.\n\n\n\n", usuario);
+
+    printf("******************************\n");
+    printf("*                            *\n");
+    printf("*       Ficha de stock       *\n");
+    printf("*                            *\n");
+    printf("******************************\n");
 
     do
     {
@@ -121,19 +143,34 @@ int main()
             {
             case 1:
                 puts("----------------------------");
-                printf(" ORDENADO POR CODIGO.\n");
-                int ordenacionEleccion;
-                printf("Elija 1 para ordenar de mayor a menor o 0 para ordenar de menor a mayor\n");
+                printf(" ORDENANDO POR CODIGO.\n");
+                while(ordenacionEleccion!=1 && ordenacionEleccion!=2)
+                {
+                printf(" 1. Ordenar de mayor a menor \n");
+                printf(" 2. Ordenar de menor a mayor\n");
                 fflush(stdin);
                 scanf("%i", &ordenacionEleccion);
                 if(ordenacionEleccion==1)
                 {
+                puts("----------------------------");
+                printf(" ORDENADO DE MAYOR A MENOR.\n");
                 ordenarPorCodigo ("productos.bin");
                 mostrarProductos("productos.bin");
-                }else{
+                }
+                else if(ordenacionEleccion==2)
+                {
+                puts("----------------------------");
+                printf(" ORDENADO DE MENOR A MAYOR.\n");
                 ordenarPorCodigo("productos.bin");
                 pasarAPila("productos.bin", &pilaOrdenadora);
+                imprimirPila(&pilaOrdenadora);
                 }
+                else
+                {
+                    printf("No ha ingresado una opcion correcta, Intentelo otra vez.\n");
+                }
+                }
+                ordenacionEleccion=0;
 
                 puts("----------------------------");
                 break;
@@ -215,6 +252,7 @@ int main()
             }
             MatrizAArchivo();
 
+
             break;
         case 9:
 
@@ -225,7 +263,7 @@ int main()
         default:
             if (eleccion != 0)
             {
-                printf("Esa funcion no existe\n");
+                printf("Esa opcion no existe, intente otra vez.\n");
             }
             break;
 
@@ -233,6 +271,10 @@ int main()
 
     }
     while (eleccion != 0);
+    } else {
+        printf("Nombre de usuario o contraseña incorrectos.\n");
+    }
+
     return 0;
 
 }
@@ -823,6 +865,8 @@ void CargarFichaStock(char rutaArchivo[])
             printf("si desea seguir cargando escriba 's'\n");
             fflush(stdin);
             scanf("%c",&eleccion);
+            eleccion = tolower(eleccion);
+
 
 
         }
@@ -911,6 +955,8 @@ void CargarProducto(char rutaArchivo[])
                printf("si desea seguir cargando escriba 's'\n");
                fflush(stdin);
                scanf("%c",&eleccion);
+               eleccion = tolower(eleccion);
+
 
                fclose(arch);
            }
