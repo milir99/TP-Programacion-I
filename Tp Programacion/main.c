@@ -53,8 +53,8 @@ void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
 void RangoFechas (char rutaArchivo[]);
 void CrearArchivo (char nuevoArchivo[30]);
-int contarMatriz();
-void MatrizAArchivo();
+void MatrizAArchivo(char matrix[100][30],char modo[]);
+int contarMatriz(char matriz[100][30]);
 void mostrarArchivosRangos(char rutaArchivo[]);
 int crearCodigo();
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -75,7 +75,7 @@ int main()
     int cambio=0;
     char nombre[30];
     char fecha[30];
-//    char continuar = 's';
+    char continuar = 's';
     int ordenacionEleccion=0;
     char productoCargar [30];
 
@@ -275,7 +275,7 @@ int main()
                 }
                 break;
 
-            }
+
             break;
         case 7:
             printf("Ingrese el numero de la opcion que desea realizar:\n");
@@ -287,15 +287,15 @@ int main()
             switch (opcion){
 
                 case 1:
-//                   continuar = 's';
-//                   while (continuar == 's')
-//                   {
+                   continuar = 's';
+                   while (continuar == 's')
+                   {
                     RangoFechas (archivoStock);
-//                       printf("Presione 's' si desea continuar buscando rangos\n");
-//                       fflush(stdin);
-//                       scanf("%c",&continuar);
-//                   }
-                       MatrizAArchivo();
+                       printf("Presione 's' si desea continuar buscando rangos\n");
+                       fflush(stdin);
+                       scanf("%c",&continuar);
+                   }
+                       MatrizAArchivo(nombresArchivos,"ab");
 
                     break;
 
@@ -324,6 +324,7 @@ int main()
                 }
                 break;
 
+
             }
 
         }
@@ -341,25 +342,72 @@ int main()
 //Elegir que archivo ver
 void elegirArchivo(char matrix[100][30],int validos)
 {
-
+    int eleccionVerEliminar;
     int opcion = -1;
+    int i = 0;
 
-    printf("Elija el archivo que desea ver\n");
+    printf("Que desea hacer\n");
+    printf("1. Ver un archivo\n");
+    printf("2. Eliminar un archivo\n");
     fflush(stdin);
-    scanf("%i",&opcion);
+    scanf("%i",&eleccionVerEliminar);
+    switch(eleccionVerEliminar){
+      case 1:
+          printf("Elija el archivo que desea ver\n");
+          fflush(stdin);
+          scanf("%i",&opcion);
 
-    if (opcion >= 0 && opcion <= validos)
-    {
-        mostrarCambioStock(matrix[opcion - 1]);
-    }
-    else
-    {
+          if (opcion >= 0 && opcion <= validos)
+          {
+              mostrarCambioStock(matrix[opcion - 1]);
+          }
+           else
+          {
 
 
-        printf("Esa opcion no existe\n");
+               printf("Esa opcion no existe\n");
 
-    }
+          }
+       break;
 
+       case 2:
+
+          printf("Elija el archivo que desea eliminar\n");
+          fflush(stdin);
+          scanf("%i",&opcion);
+
+          if (opcion >= 0 && opcion <= validos)
+          {
+              remove(matrix[opcion - 1]);
+
+
+              for(i = opcion - 1;i< validos;i++){
+
+                strcpy(matrix[i],matrix[i+1]);
+                strcpy(matrix[validos -1], "");
+                MatrizAArchivo(matrix,"wb");
+
+
+              }
+          }
+           else
+          {
+
+
+               printf("Esa opcion no existe\n");
+
+          }
+
+
+
+
+        break;
+
+
+
+
+
+     }
 }
 
 //Funcion mostrar arhivo de strings
@@ -391,20 +439,20 @@ void mostrarArchivosRangos(char rutaArchivo[])
 }
 
 //funcion matriz a archivo
-void MatrizAArchivo()
+void MatrizAArchivo(char matrix[100][30],char modo[])
 {
-    int validos = contarMatriz();
+    int validos = contarMatriz(matrix);
     int i=0;
 
-    FILE *arch = fopen("ArchivoRangos.bin","ab");
+    FILE *arch = fopen("ArchivoRangos.bin",modo);
 
     for(i=0; i<validos; i++)
     {
 
-        size_t longString = strlen(nombresArchivos[i]);
+        size_t longString = strlen(matrix[i]);
 
         fwrite(&longString, sizeof(size_t), 1, arch);
-        fwrite(nombresArchivos[i], sizeof(char), longString, arch);
+        fwrite(matrix[i], sizeof(char), longString, arch);
 
     }
 
@@ -413,7 +461,7 @@ void MatrizAArchivo()
 }
 
 //funcion contar elementos matriz
-int contarMatriz()
+int contarMatriz(char matriz[100][30])
 {
 
     int flag = 0;
@@ -422,7 +470,7 @@ int contarMatriz()
     while(flag == 0 && i<100)
     {
 
-        if(strlen(nombresArchivos[i])>0)
+        if(strlen(matriz[i])>0)
         {
 
             contador++;
@@ -446,7 +494,7 @@ int contarMatriz()
 //funcion CrearArchivo
 void CrearArchivo (char nuevoArchivo[30])
 {
-    int contadorMatriz = contarMatriz();
+    int contadorMatriz = contarMatriz(nombresArchivos);
     char extension []=".bin";
 
     printf("Nombre del nuevo archivo\n");
@@ -485,11 +533,13 @@ void RangoFechas (char rutaArchivo[])
     fflush(stdin);
     scanf("%c",&eleccionProducto);
 
-    printf("Producto que desea buscar:\n");
-    fflush(stdin);
-    gets(nombreBuscar);
+    if (eleccionProducto == 's'){
+        printf("Producto que desea buscar:\n");
+        fflush(stdin);
+        gets(nombreBuscar);
+    }
 
-    printf("presione 's' si desea guardar el rango en un archivo?\n");
+    printf("Presione 's' si desea guardar el rango en un archivo?\n");
     fflush(stdin);
     scanf("%c",&eleccionArchivo);
 

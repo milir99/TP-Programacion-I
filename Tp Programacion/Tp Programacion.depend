@@ -56,3 +56,17 @@
 	"pila.h"
 	<string.h>
 
+1685471773 source:c:\users\josev\onedrive\documentos\github\programacion\tp programacion\pila.c
+	"pila.h"
+
+1685471773 c:\users\josev\onedrive\documentos\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1686676563 source:c:\users\josev\onedrive\documentos\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
