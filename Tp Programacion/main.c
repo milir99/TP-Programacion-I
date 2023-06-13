@@ -221,6 +221,7 @@ int main()
               mostrarArchivosRangos("ArchivoRangos.bin");
             break;
         case 10:
+
             break;
         default:
             if (eleccion != 0)
@@ -236,7 +237,6 @@ int main()
     return 0;
 
 }
-
 
 //Funcion mostrar arhivo de strings
 void mostrarArchivosRangos(char rutaArchivo[]){
@@ -1079,6 +1079,5 @@ FILE *archi = fopen("productos.bin", "rb");
 
 }
 fclose(archi);
-printf("%04i\n", codigoNuevo);
 return codigoNuevo;
 }
