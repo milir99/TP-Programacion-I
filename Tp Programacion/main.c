@@ -274,7 +274,7 @@ int main()
             break;
         case 7:
             printf("Ingrese el numero de la opcion que desea realizar:\n");
-            printf(" 1.ver ficha de stock en cierto rango de fechas\n");
+            printf(" 1. Ver ficha de stock en cierto rango de fechas\n");
             printf(" 2. Mostrar archivos guardados\n");
             printf(" 3. \n");
             fflush(stdin);
@@ -289,7 +289,7 @@ int main()
 //                       fflush(stdin);
 //                       scanf("%c",&continuar);
 //                   }
-                    MatrizAArchivo();
+                       MatrizAArchivo();
 
                 break;
 
@@ -331,6 +331,7 @@ else
 return 0;
 
 }
+
 //Elegir que archivo ver
 void elegirArchivo(char matrix[100][30],int validos){
 
@@ -341,10 +342,12 @@ fflush(stdin);
 scanf("%i",&opcion);
 
     if (opcion >= 0 && opcion <= validos){
-    mostrarCambioStock(matrix[opcion - 1]);
+
+        mostrarCambioStock(matrix[opcion - 1]);
+
     }else{
 
-    printf("Esa opcion no existe\n");
+        printf("Esa opcion no existe\n");
 
     }
 
@@ -356,7 +359,6 @@ void mostrarArchivosRangos(char rutaArchivo[])
     char matrizAux[100][30];
     int contador = 0;
     FILE* arch = fopen(rutaArchivo, "rb");
-
 
     if (arch == NULL)
     {
