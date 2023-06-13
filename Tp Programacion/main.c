@@ -92,7 +92,7 @@ int main()
     char contrasenia[20];
     printf("Usuario: ");
     scanf("%s", usuario);
-    printf("Contraseña: ");
+    printf("ContraseÃ±a: ");
     scanf("%s", contrasenia);
     if (strcmp(usuario, usuarioCorrecto) == 0 && strcmp(contrasenia, contraseniaCorrecta) == 0)
     {
@@ -296,6 +296,12 @@ int main()
             break;
 
 
+              mostrarArchivosRangos("ArchivoRangos.bin");
+            break;
+        case 10:
+
+            break;
+
         default:
             if (eleccion != 0)
             {
@@ -310,13 +316,12 @@ int main()
 }
 else
 {
-    printf("Nombre de usuario o contraseña incorrectos.\n");
+    printf("Nombre de usuario o contraseÃ±a incorrectos.\n");
 }
 
 return 0;
 
 }
-
 
 //Funcion mostrar arhivo de strings
 void mostrarArchivosRangos(char rutaArchivo[])
@@ -1171,8 +1176,9 @@ int crearCodigo()
             codigoNuevo = aux.codigo + 1;
         }
 
-    }
-    fclose(archi);
-    printf("%04i\n", codigoNuevo);
-    return codigoNuevo;
+
+}
+fclose(archi);
+return codigoNuevo;
+
 }
