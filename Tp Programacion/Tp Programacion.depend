@@ -9,11 +9,12 @@
 	<stdio.h>
 	<malloc.h>
 
-1686603868 source:c:\users\valentin\documents\github\programacion\tp programacion\main.c
+1686624942 source:c:\users\valentin\documents\github\programacion\tp programacion\main.c
 	<stdio.h>
 	<stdlib.h>
 	"pila.h"
 	<string.h>
+	<ctype.h>
 
 1684988378 c:\users\valentin\documents\github\programacion\tp programacion\pila.h
 	<stdio.h>
