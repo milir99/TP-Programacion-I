@@ -162,14 +162,14 @@ int main()
                         if(ordenacionEleccion==1)
                         {
                             puts("----------------------------");
-                            printf(" ORDENADO DE MAYOR A MENOR.\n");
+                            printf(" ORDENADO DE MENOR A MAYOR.\n");
                             ordenarPorCodigo (archivoProductos);
                             mostrarProductos(archivoProductos);
                         }
                         else if(ordenacionEleccion==2)
                         {
                             puts("----------------------------");
-                            printf(" ORDENADO DE MENOR A MAYOR.\n");
+                            printf(" ORDENADO DE MAYOR A MENOR.\n");
                             ordenarPorCodigo(archivoProductos);
                             pasarAPila(archivoProductos, &pilaOrdenadora);
                             imprimirPila(&pilaOrdenadora);
@@ -203,73 +203,78 @@ int main()
                     break;
                 }
                 break;
-        case 4:
+            case 4:
                 printf("----- Stock -----\n");
                 mostrarCambioStock(archivoStock);
                 break;
-        case 5:
-            do{
-            printf("Desea realizar un cambio en: \n");
-            printf(" 1.La lista de productos.\n");
-            printf(" 2.La ficha de stock.\n");
-            fflush(stdin);
-            scanf("%i",&cambio);
-            if (cambio == 1)
-            {
-            printf("Ingrese el nombre del producto al cual desea cambiarle un dato.\n");
-            fflush(stdin);
-            gets(nombre);
-            modificarDatosProducto("productos.bin", nombre);
-
-            }
-            else if(cambio==2)
-            {
-            printf("Ingrese la fecha ingresada en la ficha de stock.\n");
-            fflush(stdin);
-            gets(fecha);
-            printf("Ingrese el producto.\n");
-            fflush(stdin);
-            gets(nombre);
-            modificarDatosStock("fichastock.bin", nombre,fecha );
-            }
-            else
+            case 5:
+                do
                 {
-                    printf("Opcion inresada incorrecta, intentelo otra vez");
+                    printf("Desea realizar un cambio en: \n");
+                    printf(" 1.La lista de productos.\n");
+                    printf(" 2.La ficha de stock.\n");
+                    fflush(stdin);
+                    scanf("%i",&cambio);
+                    if (cambio == 1)
+                    {
+                        printf("Ingrese el nombre del producto al cual desea cambiarle un dato.\n");
+                        fflush(stdin);
+                        gets(nombre);
+                        modificarDatosProducto(archivoProductos, nombre);
+
+                    }
+                    else if(cambio==2)
+                    {
+                        printf("Ingrese la fecha ingresada en la ficha de stock.\n");
+                        fflush(stdin);
+                        gets(fecha);
+                        printf("Ingrese el producto.\n");
+                        fflush(stdin);
+                        gets(nombre);
+                        modificarDatosStock(archivoStock, nombre,fecha );
+                    }
+                    else
+                    {
+                        printf("Opcion inresada incorrecta, intentelo otra vez");
+                    }
                 }
-            }while(cambio!=1 && cambio!=2);
-            break;
-        case 6:
-            printf(" Buscar por(:\n");
-            printf(" 1. Codigo.\n");
-            printf(" 2. Nombre.\n");
-            fflush(stdin);
-            scanf("%i",&buscarPor);
-            switch(buscarPor)
-            {
-            case 1:
-                puts("----------------------------");
-                printf(" BUSCAR POR CODIGO.\n");
-                int codigoBuscado;
-                int posicionCodigo;
-                printf(" Ingrese el codigo a buscar:\n");
-                fflush(stdin);
-                scanf("%i", &codigoBuscado);
-                posicionCodigo=buscarXcodigo(archivoProductos,codigoBuscado);
-                mostrarXposicion(archivoProductos,posicionCodigo);
-                puts("----------------------------");
+                while(cambio!=1 && cambio!=2);
                 break;
-            case 2:
-                puts("----------------------------");
-                printf(" BUSCAR POR NOMBRE.\n");
-                char nombreBuscado[20];
-                int posicionNombre;
-                printf(" Ingrese el nombre a buscar:\n");
+            case 6:
+                printf(" Buscar por(:\n");
+                printf(" 1. Codigo.\n");
+                printf(" 2. Nombre.\n");
                 fflush(stdin);
-                gets(nombreBuscado);
-                posicionNombre=buscarXnombre(archivoProductos,nombreBuscado);
-                mostrarXposicion(archivoProductos,posicionNombre);
-                puts("----------------------------");
+                scanf("%i",&buscarPor);
+                switch(buscarPor)
+                {
+                case 1:
+                    puts("----------------------------");
+                    printf(" BUSCAR POR CODIGO.\n");
+                    int codigoBuscado;
+                    int posicionCodigo;
+                    printf(" Ingrese el codigo a buscar:\n");
+                    fflush(stdin);
+                    scanf("%i", &codigoBuscado);
+                    posicionCodigo=buscarXcodigo(archivoProductos,codigoBuscado);
+                    mostrarXposicion(archivoProductos,posicionCodigo);
+                    puts("----------------------------");
+                    break;
+                case 2:
+                    puts("----------------------------");
+                    printf(" BUSCAR POR NOMBRE.\n");
+                    char nombreBuscado[20];
+                    int posicionNombre;
+                    printf(" Ingrese el nombre a buscar:\n");
+                    fflush(stdin);
+                    gets(nombreBuscado);
+                    posicionNombre=buscarXnombre(archivoProductos,nombreBuscado);
+                    mostrarXposicion(archivoProductos,posicionNombre);
+                    puts("----------------------------");
+                    break;
+                }
                 break;
+
             }
             break;
         case 7:
@@ -280,72 +285,76 @@ int main()
             fflush(stdin);
             scanf("%i",&opcion);
             switch (opcion){
+
                 case 1:
 //                   continuar = 's';
 //                   while (continuar == 's')
 //                   {
-                       RangoFechas (archivoStock);
+                    RangoFechas (archivoStock);
 //                       printf("Presione 's' si desea continuar buscando rangos\n");
 //                       fflush(stdin);
 //                       scanf("%c",&continuar);
 //                   }
                        MatrizAArchivo();
 
-                break;
+                    break;
 
                 case 2:
 
-                     mostrarArchivosRangos("ArchivoRangos.bin");
+                    mostrarArchivosRangos("ArchivoRangos.bin");
 
-                break;
+                    break;
 
                 case 3:
 
 
 
+                    break;
+                }
+
                 break;
+            case 10:
+
+                break;
+
+            default:
+                if (eleccion != 0)
+                {
+                    printf("Esa opcion no existe, intente otra vez.\n");
+                }
+                break;
+
             }
-
-             break;
-        case 10:
-
-            break;
-
-        default:
-            if (eleccion != 0)
-            {
-                printf("Esa opcion no existe, intente otra vez.\n");
-            }
-            break;
 
         }
-
+        while (eleccion != 0);
     }
-    while (eleccion != 0);
-}
-else
-{
-    printf("Nombre de usuario o clave incorrecto/a.\n");
-}
+    else
+    {
+        printf("Nombre de usuario o clave incorrecto/a.\n");
+    }
 
-return 0;
+    return 0;
 
 }
 
 //Elegir que archivo ver
-void elegirArchivo(char matrix[100][30],int validos){
+void elegirArchivo(char matrix[100][30],int validos)
+{
 
-int opcion = -1;
+    int opcion = -1;
 
-printf("Elija el archivo que desea ver\n");
-fflush(stdin);
-scanf("%i",&opcion);
+    printf("Elija el archivo que desea ver\n");
+    fflush(stdin);
+    scanf("%i",&opcion);
 
-    if (opcion >= 0 && opcion <= validos){
-
+    if (opcion >= 0 && opcion <= validos)
+    {
         mostrarCambioStock(matrix[opcion - 1]);
+    }
+    else
+    {
 
-    }else{
 
         printf("Esa opcion no existe\n");
 
@@ -498,47 +507,50 @@ void RangoFechas (char rutaArchivo[])
 
         while (fread(&aux, sizeof(stock), 1, arch) > 0)
         {
-            if (eleccionProducto == 's'){
+            if (eleccionProducto == 's')
+            {
 
-               if ((strcmp(aux.fecha,antigua) >= 0) && (strcmp(aux.fecha,reciente) <= 0) && strcmpi(nombreBuscar,aux.nombre) == 0)
-               {
+                if ((strcmp(aux.fecha,antigua) >= 0) && (strcmp(aux.fecha,reciente) <= 0) && strcmpi(nombreBuscar,aux.nombre) == 0)
+                {
 
-                   mostrarUnCambioStock (aux);
-
-
-                   if(eleccionArchivo == 's')
-                   {
-
-                       fwrite(&aux,sizeof(stock),1,nuevoArch);
-
-                   }
-
-               }
-
-            }else{
+                    mostrarUnCambioStock (aux);
 
 
-               if ((strcmp(aux.fecha,antigua) >= 0) && (strcmp(aux.fecha,reciente) <= 0))
-               {
+                    if(eleccionArchivo == 's')
+                    {
 
-                      mostrarUnCambioStock (aux);
+                        fwrite(&aux,sizeof(stock),1,nuevoArch);
+
+                    }
+
+                }
+
+            }
+            else
+            {
 
 
-                      if(eleccionArchivo == 's')
-                      {
+                if ((strcmp(aux.fecha,antigua) >= 0) && (strcmp(aux.fecha,reciente) <= 0))
+                {
 
-                          fwrite(&aux,sizeof(stock),1,nuevoArch);
+                    mostrarUnCambioStock (aux);
 
-                      }
 
-               }
+                    if(eleccionArchivo == 's')
+                    {
+
+                        fwrite(&aux,sizeof(stock),1,nuevoArch);
+
+                    }
+
+                }
 
             }
 
         }
 
-     fclose(nuevoArch);
-     fclose(arch);
+        fclose(nuevoArch);
+        fclose(arch);
 
     }
 
@@ -1209,8 +1221,8 @@ void imprimirPila(Pila *pilaOrdenadora)
 {
     while(!pilavacia(pilaOrdenadora))
     {
-        int posicionCodigo=buscarXcodigo("productos.bin",tope(pilaOrdenadora));
-        mostrarXposicion("productos.bin", posicionCodigo);
+        int posicionCodigo=buscarXcodigo(archivoProductos,tope(pilaOrdenadora));
+        mostrarXposicion(archivoProductos, posicionCodigo);
         desapilar(pilaOrdenadora);
     }
 }
@@ -1238,8 +1250,8 @@ int crearCodigo()
         }
 
 
-}
-fclose(archi);
-return codigoNuevo;
+    }
+    fclose(archi);
+    return codigoNuevo;
 
 }
