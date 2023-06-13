@@ -106,11 +106,11 @@ int main()
             printf("\nIngrese la opcion que desea realizar:\n");
             printf(" 1. Cargar un Nuevo producto.\n");
             printf(" 2. Cargar Ficha de Stock.\n");//chequear si queremos que cargue al stock igual o solo al producto
-            printf(" 3. Mostrar stock.\n");// MOSTRAR ARCH PROD POR CODIGO POR NOMBRE Y POR CANTIDAD
+            printf(" 3. Mostrar stock de productos.\n");// MOSTRAR ARCH PROD POR CODIGO POR NOMBRE Y POR CANTIDAD
             printf(" 4. Mostrar Ficha de stock. \n");// MOSTRAR ARCH stock  POR articulo
             printf(" 5. Cambiar datos.\n"); // opcion para que sea en la ficha de stock o en la ficha de productos
             printf(" 6. Buscar.\n");
-            printf(" 7. Archivos. \n");
+            printf(" 7. Rangos de stock. \n");
             printf(" 0. Terminar el programa.\n");
             fflush(stdin);
             scanf("%i",&eleccion);
@@ -129,7 +129,7 @@ int main()
                 if(flag==-1)
                 {
                     printf("El producto no se encuentra cargado\n");
-                    printf("Ingres 's' si desea cargarlo\n");
+                    printf("Ingrese 's' si desea cargarlo\n");
                     fflush(stdin);
                     scanf("%c",&carga);
                     if (carga == 's')
@@ -242,7 +242,7 @@ int main()
                 while(cambio!=1 && cambio!=2);
                 break;
             case 6:
-                printf(" Buscar por(:\n");
+                printf(" Buscar por:\n");
                 printf(" 1. Codigo.\n");
                 printf(" 2. Nombre.\n");
                 fflush(stdin);
@@ -282,9 +282,9 @@ int main()
             printf("Ingrese el numero de la opcion que desea realizar:\n");
             printf(" 1. Ver ficha de stock en cierto rango de fechas\n");
             printf(" 2. Mostrar archivos guardados\n");
-            printf(" 3. \n");
             fflush(stdin);
             scanf("%i",&opcion);
+
             switch (opcion){
 
                 case 1:
@@ -306,11 +306,11 @@ int main()
 
                     break;
 
-                case 3:
+                default:
 
+                    printf("Esa opcion no existe\n");
 
-
-                    break;
+                break;
                 }
 
                 break;
@@ -352,6 +352,7 @@ void elegirArchivo(char matrix[fila][col],int validos)
     printf("2. Eliminar un archivo\n");
     fflush(stdin);
     scanf("%i",&eleccionVerEliminar);
+
     switch(eleccionVerEliminar){
       case 1:
           printf("Elija el archivo que desea ver\n");
@@ -360,7 +361,9 @@ void elegirArchivo(char matrix[fila][col],int validos)
 
           if (opcion >= 0 && opcion <= validos)
           {
+
               mostrarCambioStock(matrix[opcion - 1]);
+
           }
            else
           {
@@ -422,20 +425,22 @@ void mostrarArchivosRangos(char rutaArchivo[])
     {
         printf("No se pudo abrir el archivo\n");
         return;
-    }
+    }else{
 
-    size_t longString;
-    char aux[fila];
-
-    while (fread(&longString, sizeof(size_t), 1, arch) == 1)
-    {
-        fread(aux, sizeof(char), longString, arch);
-        aux[longString] = '\0';
-        printf("%i:%s\n",(contador + 1),aux);
-        strcpy(matrizAux[contador],aux);
-        contador ++;
+       size_t longString;
+       char aux[fila];
+       puts("------------ARCHIVOS-----------");
+       while (fread(&longString, sizeof(size_t), 1, arch) == 1)
+       {
+           fread(aux, sizeof(char), longString, arch);
+           aux[longString] = '\0';
+           printf("%i:%s\n",(contador + 1),aux);
+           strcpy(matrizAux[contador],aux);
+           contador ++;
+       }
+       puts("--------------------------------");
+       fclose(arch);
     }
-    fclose(arch);
     elegirArchivo(matrizAux,contador);
 }
 
@@ -534,7 +539,8 @@ void RangoFechas (char rutaArchivo[])
     fflush(stdin);
     scanf("%c",&eleccionProducto);
 
-    if (eleccionProducto == 's'){
+    if (eleccionProducto == 's')
+    {
         printf("Producto que desea buscar:\n");
         fflush(stdin);
         gets(nombreBuscar);
@@ -1061,7 +1067,7 @@ void cargaStock(stock *aux,char producto[])
     fflush(stdin);
     gets(aux->fecha);
 
-    printf("Tipo de accion Egreso o Ingreso:\n");
+    printf("Tipo de accion:\n'E' para egreso\n'I'para ingreso\n");
     fflush(stdin);
     scanf("%c",&aux->accion);
     aux->accion = toupper(aux->accion);
@@ -1151,13 +1157,12 @@ void CargarProducto(char rutaArchivo[])
 // CARGAR UN PRODUCTO
 void NuevoProducto(producto *productoNuevo)
 {
-
-    productoNuevo->codigo = crearCodigo();
-    printf("Codigo asignado al producto es: %04i\n", productoNuevo->codigo);
-
     printf("Nombre del producto:\n");
     fflush(stdin);
     gets(productoNuevo->nombre);
+
+    productoNuevo->codigo = crearCodigo();
+    printf("Codigo asignado al producto es: %04i\n", productoNuevo->codigo);
 
     printf("Precio de Venta:\n");
     fflush(stdin);
