@@ -3,13 +3,14 @@
 #include "pila.h"
 #include <string.h>
 #include <ctype.h>
-
+#define fila 100
+#define col 30
 
 typedef struct
 {
 
     int codigo;
-    char nombre[30];
+    char nombre[col];
     float precio;
     int cantidad;
 
@@ -19,12 +20,12 @@ typedef struct
 {
     char accion;// (I O E) (ingreso o egreso)
     char fecha[11]; //(9999/12/31);
-    char nombre [30];
+    char nombre [col];
     float precio;
     int cantidad;
 } stock ;
 
-char nombresArchivos[100][30];
+char nombresArchivos[fila][col];
 char archivoProductos[] = "productos.bin";
 char archivoStock[] = "fichastock.bin";
 
@@ -52,9 +53,9 @@ void modificarDatosProducto(char rutaArchivo[], char nombre[]);
 void cambiarStock (stock *aux);
 void modificarDatosStock(char rutaArchivo[], char nombre[],char fecha[] );
 void RangoFechas (char rutaArchivo[]);
-void CrearArchivo (char nuevoArchivo[30]);
-void MatrizAArchivo(char matrix[100][30],char modo[]);
-int contarMatriz(char matriz[100][30]);
+void CrearArchivo (char nuevoArchivo[col]);
+void MatrizAArchivo(char matrix[fila][col],char modo[]);
+int contarMatriz(char matriz[fila][col]);
 void mostrarArchivosRangos(char rutaArchivo[]);
 int crearCodigo();
 int buscarXcodigo(char archivito[], int codigoBuscado);
@@ -73,11 +74,11 @@ int main()
     int opcion=0;
     char carga;
     int cambio=0;
-    char nombre[30];
-    char fecha[30];
+    char nombre[col];
+    char fecha[col];
     char continuar = 's';
     int ordenacionEleccion=0;
-    char productoCargar [30];
+    char productoCargar [col];
 
     char usuarioCorrecto[] = "milagros";
     char contraseniaCorrecta[] = "1234";
@@ -340,7 +341,7 @@ int main()
 }
 
 //Elegir que archivo ver
-void elegirArchivo(char matrix[100][30],int validos)
+void elegirArchivo(char matrix[fila][col],int validos)
 {
     int eleccionVerEliminar;
     int opcion = -1;
@@ -413,7 +414,7 @@ void elegirArchivo(char matrix[100][30],int validos)
 //Funcion mostrar arhivo de strings
 void mostrarArchivosRangos(char rutaArchivo[])
 {
-    char matrizAux[100][30];
+    char matrizAux[fila][col];
     int contador = 0;
     FILE* arch = fopen(rutaArchivo, "rb");
 
@@ -424,7 +425,7 @@ void mostrarArchivosRangos(char rutaArchivo[])
     }
 
     size_t longString;
-    char aux[100];
+    char aux[fila];
 
     while (fread(&longString, sizeof(size_t), 1, arch) == 1)
     {
@@ -439,7 +440,7 @@ void mostrarArchivosRangos(char rutaArchivo[])
 }
 
 //funcion matriz a archivo
-void MatrizAArchivo(char matrix[100][30],char modo[])
+void MatrizAArchivo(char matrix[fila][col],char modo[])
 {
     int validos = contarMatriz(matrix);
     int i=0;
@@ -461,13 +462,13 @@ void MatrizAArchivo(char matrix[100][30],char modo[])
 }
 
 //funcion contar elementos matriz
-int contarMatriz(char matriz[100][30])
+int contarMatriz(char matriz[fila][col])
 {
 
     int flag = 0;
     int contador = 0;
     int i = 0;
-    while(flag == 0 && i<100)
+    while(flag == 0 && i<fila)
     {
 
         if(strlen(matriz[i])>0)
@@ -492,7 +493,7 @@ int contarMatriz(char matriz[100][30])
 }
 
 //funcion CrearArchivo
-void CrearArchivo (char nuevoArchivo[30])
+void CrearArchivo (char nuevoArchivo[col])
 {
     int contadorMatriz = contarMatriz(nombresArchivos);
     char extension []=".bin";
@@ -514,12 +515,12 @@ void RangoFechas (char rutaArchivo[])
 {
 
     stock aux;
-    char antigua[30];
-    char reciente[30];
-    char nuevoArchivo[30];
+    char antigua[col];
+    char reciente[col];
+    char nuevoArchivo[col];
     char eleccionArchivo = 's';
     char eleccionProducto = 's';
-    char nombreBuscar[30];
+    char nombreBuscar[col];
 
     printf("Fecha mas antigua YYYY/MM/DD:\n");
     fflush(stdin);
@@ -612,7 +613,7 @@ void ModificarCantidadStock (char rutaArchivo[],stock aux)
 
     int posicion = -1;
     producto auxProducto;
-    char nombreProducto[30];
+    char nombreProducto[col];
     strcpy(nombreProducto,aux.nombre);
 
     posicion = buscarXnombre("productos.bin",nombreProducto);
@@ -825,7 +826,7 @@ void archivoAarreglo(char rutaArchivo[], producto arr[],int *validos)
 //ORDENAR POR Cantidad!
 void ordenarPorCantidad (char rutaArchivo[])
 {
-    producto arr[30];
+    producto arr[col];
     producto aux;
     int validos=0;
     int i=0;
@@ -884,7 +885,7 @@ void ordenacionSeleccionCantidad (producto arr[], int validos)
 //ORDENAR POR NOMBRE!
 void ordenarPorNombre (char rutaArchivo[])
 {
-    producto arr[30];
+    producto arr[col];
     producto aux;
     int validos=0;
     int i=0;
@@ -942,7 +943,7 @@ int posicionMenorNombre(producto arr[], int pos, int validos)
 //ORDENAR POR CODIGO!
 void ordenarPorCodigo (char rutaArchivo[])
 {
-    producto arr[30];
+    producto arr[col];
     producto aux;
     int validos=0;
     int i=0;
