@@ -31,7 +31,7 @@ char archivoStock[] = "fichastock.bin";
 
 
 void CargarProducto(char archivito[]);
-void NuevoProducto(producto *productoNuevo);
+void NuevoProducto(producto *productoNuevo, char producto[]);
 void mostrarProductos(char archivito[]);
 void mostrarUnProducto(producto aux);
 void cargaStock(stock *aux,char producto[]);
@@ -1121,6 +1121,7 @@ void mostrarUnProducto (producto aux)
     puts("\n-----------------------------------------------\n");
 }
 
+
 // CARGAR CANTIDAD DESEADA DE UN PRODUCTO
 void CargarProducto(char rutaArchivo[])
 {
@@ -1130,39 +1131,49 @@ void CargarProducto(char rutaArchivo[])
     FILE *arch;
 
 
-
     while(eleccion == 's')
     {
-        arch = fopen(rutaArchivo,"ab");
+        int flag=0;
+        char productoCargar[30];
 
-        if(arch != NULL)
+        printf("Ingrese el nombre del producto a cargar: ");
+        fflush(stdin);
+        gets(productoCargar);
+        flag = buscarXnombre(archivoProductos, productoCargar);
+        if(flag!=-1)
         {
+            printf("El producto ya existe.\n");
 
-            NuevoProducto(&aux);
-            fwrite(&aux, sizeof(producto), 1, arch);
-            printf("si desea seguir cargando escriba 's'\n");
-            fflush(stdin);
-            scanf("%c",&eleccion);
-            eleccion = tolower(eleccion);
-
-
-            fclose(arch);
         }
+        else
+        {
+            arch = fopen(rutaArchivo,"ab");
+            if(arch != NULL)
 
+            {
+                NuevoProducto(&aux,productoCargar);
+                fwrite(&aux, sizeof(producto), 1, arch);
+                fclose(arch);
 
+            }
+
+        }
+        printf("si desea seguir cargando escriba 's'\n");
+        fflush(stdin);
+        scanf("%c",&eleccion);
+        eleccion = tolower(eleccion);
 
     }
 }
-
 // CARGAR UN PRODUCTO
-void NuevoProducto(producto *productoNuevo)
+void NuevoProducto(producto *productoNuevo, char productoN[])
 {
-    printf("Nombre del producto:\n");
-    fflush(stdin);
-    gets(productoNuevo->nombre);
 
     productoNuevo->codigo = crearCodigo();
     printf("Codigo asignado al producto es: %04i\n", productoNuevo->codigo);
+
+    printf("Nombre del producto:%s\n",productoN);
+    strcpy(productoNuevo->nombre,productoN);
 
     printf("Precio de Venta:\n");
     fflush(stdin);
