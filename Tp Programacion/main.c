@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #define fila 100
-#define col 30
+#define col 70
 
 typedef struct
 {
