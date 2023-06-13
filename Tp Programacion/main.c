@@ -61,6 +61,7 @@ int buscarXnombre(char nombreArchivo[], char nombrebuscado[]);
 void mostrarXposicion(char nombreArchivo[], int posicion);
 void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
 void imprimirPila(Pila *pilaOrdenadora);
+void mostrarCambioStockProducto(char rutaArchivo[]);
 
 
 int main()
@@ -205,6 +206,7 @@ int main()
                 printf("Ingrese el numero de la opcion que desea realizar:\n");
                 printf("1. Mostrar todos los cambios de stock\n");
                 printf("2. Ver ficha de stock en cierto rango de fechas\n");
+                printf("3. Ver ficha de stock por producto\n");
                 fflush(stdin);
                 scanf("%i",&opcion);
                 switch (opcion)
@@ -228,6 +230,12 @@ int main()
                     MatrizAArchivo(nombresArchivos,"ab");
 
                     break;
+
+                case 3:
+
+                     mostrarCambioStockProducto(archivoStock);
+
+                break;
 
                 default:
 
@@ -321,7 +329,7 @@ int main()
                 {
                     printf("Esa opcion no existe, intente otra vez.\n");
                 }
-                break;
+            break;
 
 
             }
@@ -336,6 +344,30 @@ int main()
 
     return 0;
 
+}
+
+
+//Mostrar ficha stock por producto
+void mostrarCambioStock(char rutaArchivo[])
+{
+    stock aux;
+    FILE *arch;
+
+    arch=fopen(rutaArchivo,"rb");
+
+    if(arch!=NULL)
+    {
+        while(!feof(arch))
+        {
+            fread(&aux,sizeof(stock),1,arch);
+            if(!feof(arch))
+            {
+                mostrarUnCambioStock(aux);
+            }
+
+        }
+        fclose(arch);
+    }
 }
 
 //Elegir que archivo ver
@@ -400,14 +432,7 @@ void elegirArchivo(char matrix[fila][col],int validos)
 
           }
 
-
-
-
         break;
-
-
-
-
 
      }
 }
@@ -830,7 +855,7 @@ void archivoAarreglo(char rutaArchivo[], producto arr[],int *validos)
 //ORDENAR POR Cantidad!
 void ordenarPorCantidad (char rutaArchivo[])
 {
-    producto arr[col];
+    producto arr[fila];
     producto aux;
     int validos=0;
     int i=0;
@@ -889,7 +914,7 @@ void ordenacionSeleccionCantidad (producto arr[], int validos)
 //ORDENAR POR NOMBRE!
 void ordenarPorNombre (char rutaArchivo[])
 {
-    producto arr[col];
+    producto arr[fila];
     producto aux;
     int validos=0;
     int i=0;
@@ -897,7 +922,7 @@ void ordenarPorNombre (char rutaArchivo[])
 
     ordenacionSeleccionNombre (arr, validos);
     FILE *arch;
-    arch = fopen( rutaArchivo,"w");
+    arch = fopen( rutaArchivo,"wb");
     if(arch!=NULL)
     {
         while(i<validos)
@@ -935,7 +960,7 @@ int posicionMenorNombre(producto arr[], int pos, int validos)
     int i = pos + 1;
     while (i < validos)
     {
-        if (strcmpi(arr[i].nombre, arr[posmenor].nombre) < 0)
+        if (strcmp(arr[i].nombre, arr[posmenor].nombre) < 0)
         {
             posmenor = i;
         }
@@ -947,7 +972,7 @@ int posicionMenorNombre(producto arr[], int pos, int validos)
 //ORDENAR POR CODIGO!
 void ordenarPorCodigo (char rutaArchivo[])
 {
-    producto arr[col];
+    producto arr[fila];
     producto aux;
     int validos=0;
     int i=0;
@@ -1016,9 +1041,13 @@ void mostrarUnCambioStock (stock aux)
 }
 
 //FUNCION PARA MOSTRAR TODOS LOS  DATOS DE STOCK
-void mostrarCambioStock(char rutaArchivo[])
+void mostrarCambioStockProducto(char rutaArchivo[])
 {
     stock aux;
+    char nombre[col];
+    printf("Que producto desea buscar\n");
+    fflush(stdin);
+    gets(nombre);
     FILE *arch;
 
     arch=fopen(rutaArchivo,"rb");
@@ -1028,7 +1057,7 @@ void mostrarCambioStock(char rutaArchivo[])
         while(!feof(arch))
         {
             fread(&aux,sizeof(stock),1,arch);
-            if(!feof(arch))
+            if(aux.nombre == nombre)
             {
                 mostrarUnCambioStock(aux);
             }
@@ -1271,14 +1300,16 @@ void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora)
 
     if(archi!=NULL)
     {
-        while(!feof(archi))
+        while(fread(&aux,sizeof(producto),1,archi)>0)
         {
-            fread(&aux,sizeof(producto),1,archi);
+
             apilar(pilaOrdenadora,aux.codigo);
+
         }
-        fclose(archi);
+
 
     }
+    fclose(archi);
 }
 
 void imprimirPila(Pila *pilaOrdenadora)
