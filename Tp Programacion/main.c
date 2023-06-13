@@ -8,7 +8,6 @@
 
 typedef struct
 {
-
     int codigo;
     char nombre[col];
     float precio;
@@ -28,8 +27,6 @@ typedef struct
 char nombresArchivos[fila][col];
 char archivoProductos[] = "productos.bin";
 char archivoStock[] = "fichastock.bin";
-
-
 void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo, char producto[]);
 void mostrarProductos(char archivito[]);
@@ -568,7 +565,7 @@ void RangoFechas (char rutaArchivo[])
             if (eleccionProducto == 's')
             {
 
-                if ((strcmp(aux.fecha,antigua) >= 0) && (strcmp(aux.fecha,reciente) <= 0) && strcmpi(nombreBuscar,aux.nombre) == 0)
+                if ((strcmpi(aux.fecha,antigua) >= 0) && (strcmpi(aux.fecha,reciente) <= 0) && strcmpi(nombreBuscar,aux.nombre) == 0)
                 {
 
                     mostrarUnCambioStock (aux);
@@ -588,7 +585,7 @@ void RangoFechas (char rutaArchivo[])
             {
 
 
-                if ((strcmp(aux.fecha,antigua) >= 0) && (strcmp(aux.fecha,reciente) <= 0))
+                if ((strcmpi(aux.fecha,antigua) >= 0) && (strcmpi(aux.fecha,reciente) <= 0))
                 {
 
                     mostrarUnCambioStock (aux);
@@ -1121,7 +1118,6 @@ void mostrarUnProducto (producto aux)
     printf("Stock: %i\n",aux.cantidad);
     puts("\n-----------------------------------------------\n");
 }
-
 
 // CARGAR CANTIDAD DESEADA DE UN PRODUCTO
 void CargarProducto(char rutaArchivo[])
