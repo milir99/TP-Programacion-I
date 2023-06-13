@@ -25,14 +25,16 @@ typedef struct
 } stock ;
 
 char nombresArchivos[100][30];
+char archivoProductos[] = "productos.bin";
+char archivoStock[] = "fichastock.bin";
 
 
 void CargarProducto(char archivito[]);
 void NuevoProducto(producto *productoNuevo);
 void mostrarProductos(char archivito[]);
 void mostrarUnProducto(producto aux);
-void cargaStock(stock *aux);
-void CargarFichaStock(char rutaArchivo[]);
+void cargaStock(stock *aux,char producto[]);
+void CargarFichaStock(char rutaArchivo[], char producto[]);
 void mostrarUnCambioStock (stock aux);
 void mostrarCambioStock(char rutaArchivo[]);
 void archivoAarreglo(char rutaArchivo[], producto arr[],int *validos);
@@ -70,18 +72,21 @@ void imprimirPila(Pila *pilaOrdenadora);
 int main()
 {
     int eleccion;
-    int ordenarPor=0;
     int buscarPor=0;
+    int flag=0;
+    int opcion=0;
+    char carga;
+    int cambio=0;
     char nombre[30];
     char fecha[30];
     char continuar = 's';
-    Pila pilaOrdenadora;
-    inicpila(&pilaOrdenadora);
-    int ordenacionEleccion=0;;
-        // Definir el nombre de usuario y contraseña correctos
+    int ordenacionEleccion=0;
+    char productoCargar [30];
+
     char usuarioCorrecto[] = "milagros";
     char contraseniaCorrecta[] = "1234";
-
+    Pila pilaOrdenadora;
+    inicpila(&pilaOrdenadora);
 
     char usuario[20];
     char contrasenia[20];
@@ -89,117 +94,140 @@ int main()
     scanf("%s", usuario);
     printf("Contraseña: ");
     scanf("%s", contrasenia);
-    if (strcmp(usuario, usuarioCorrecto) == 0 && strcmp(contrasenia, contraseniaCorrecta) == 0) {
-    printf("Bienvenido, %s.\n\n\n\n", usuario);
-
-    printf("******************************\n");
-    printf("*                            *\n");
-    printf("*       Ficha de stock       *\n");
-    printf("*                            *\n");
-    printf("******************************\n");
-
-    do
+    if (strcmp(usuario, usuarioCorrecto) == 0 && strcmp(contrasenia, contraseniaCorrecta) == 0)
     {
-        printf("\nIngrese la opcion que desea realizar \n");
-        printf(" 0. Terminar el programa\n");
-        printf(" 1. Cargar un producto \n");
-        printf(" 2. cargar ficha de stock \n");
-        printf(" 3. mostrar productos y archivo de stock\n");
-        printf(" 4. ordenar lista de productos\n");
-        printf(" 5. cambiar un dato del producto\n");
-        printf(" 6. cambiar datos de la ficha de stock\n");
-        printf(" 7. Buscar y mostrar productos\n");
-        printf(" 8.Crear archivo con rangos\n");
-        printf(" 9.\n");
-        printf(" 10.\n");
 
-        fflush(stdin);
-        scanf("%i",&eleccion);
 
-        switch(eleccion)
+        printf("******************************\n");
+        printf("*        BIENVENIDO          *\n");
+        printf("******************************\n");
+
+        do
         {
-        case 1:
-            CargarProducto("productos.bin");
 
-
-            break;
-        case 2:
-            CargarFichaStock("fichastock.bin");
-
-            break;
-        case 3:
-            mostrarProductos("productos.bin");
-            puts("\n\n STOCK");
-            mostrarCambioStock("fichastock.bin");
-            break;
-        case 4:
-            printf(" Ordenar por(:\n");
-            printf(" 1. Codigo.\n");
-            printf(" 2. Nombre.\n");
-            printf(" 3. Cantidad.\n");
+            printf("\n----- Ficha de Stock -----\n");
+            printf("\nIngrese la opcion que desea realizar:\n");
+            printf(" 1. Cargar un Nuevo producto.\n");
+            printf(" 2. Cargar Ficha de Stock.\n");//chequear si queremos que cargue al stock igual o solo al producto
+            printf(" 3. Mostrar stock.\n");// MOSTRAR ARCH PROD POR CODIGO POR NOMBRE Y POR CANTIDAD
+            printf(" 4. Mostrar Ficha de stock. \n");// MOSTRAR ARCH stock  POR articulo
+            printf(" 5. Cambiar datos.\n"); // opcion para que sea en la ficha de stock o en la ficha de productos
+            printf(" 6. Buscar.\n");
+            printf(" 7. Archivos. \n");
+            printf(" 0. Terminar el programa.\n");
             fflush(stdin);
-            scanf("%i",&ordenarPor);
-            switch(ordenarPor)
+            scanf("%i",&eleccion);
+
+            switch(eleccion)
             {
             case 1:
-                puts("----------------------------");
-                printf(" ORDENANDO POR CODIGO.\n");
-                while(ordenacionEleccion!=1 && ordenacionEleccion!=2)
-                {
-                printf(" 1. Ordenar de mayor a menor \n");
-                printf(" 2. Ordenar de menor a mayor\n");
+                CargarProducto(archivoProductos);
+                break;
+            case 2:
+                printf("Ingrese el nombre del producto a cargar stock: ");
                 fflush(stdin);
-                scanf("%i", &ordenacionEleccion);
-                if(ordenacionEleccion==1)
+                gets(productoCargar);
+
+                flag = buscarXnombre(archivoProductos, productoCargar);
+                if(flag==-1)
                 {
-                puts("----------------------------");
-                printf(" ORDENADO DE MAYOR A MENOR.\n");
-                ordenarPorCodigo ("productos.bin");
-                mostrarProductos("productos.bin");
-                }
-                else if(ordenacionEleccion==2)
-                {
-                puts("----------------------------");
-                printf(" ORDENADO DE MENOR A MAYOR.\n");
-                ordenarPorCodigo("productos.bin");
-                pasarAPila("productos.bin", &pilaOrdenadora);
-                imprimirPila(&pilaOrdenadora);
+                    printf("El producto no se encuentra cargado\n");
+                    printf("Ingres 's' si desea cargarlo\n");
+                    fflush(stdin);
+                    scanf("%c",&carga);
+                    if (carga == 's')
+                    {
+                        CargarProducto(archivoProductos);
+                    }
                 }
                 else
                 {
-                    printf("No ha ingresado una opcion correcta, Intentelo otra vez.\n");
+                    CargarFichaStock(archivoStock,productoCargar);
                 }
-                }
-                ordenacionEleccion=0;
-
-                puts("----------------------------");
-                break;
-            case 2:
-                puts("----------------------------");
-                printf(" ORDENADO POR NOMBRE.\n");
-                ordenarPorNombre ("productos.bin");
-                mostrarProductos("productos.bin");
-                puts("----------------------------");
                 break;
             case 3:
-                puts("----------------------------");
-                printf(" ORDENADO POR CANTIDAD.\n");
-                ordenarPorCantidad ("productos.bin");
-                mostrarProductos("productos.bin");
-                puts("----------------------------");
+                printf("Mostrar productos organizados por: \n");
+                printf(" 1. Codigo.\n");
+                printf(" 2. Nombre.\n");
+                printf(" 3. Cantidad.\n");
+                fflush(stdin);
+                scanf("%i",&opcion);
+                switch(opcion)
+                {
+                case 1:
+                    puts("----------------------------");
+                    printf(" ORDENANDO POR CODIGO.\n");
+                    while(ordenacionEleccion!=1 && ordenacionEleccion!=2)
+                    {
+                        printf(" 1. Ordenar de menor a mayor \n");
+                        printf(" 2. Ordenar de mayor a menor\n");
+                        fflush(stdin);
+                        scanf("%i", &ordenacionEleccion);
+                        if(ordenacionEleccion==1)
+                        {
+                            puts("----------------------------");
+                            printf(" ORDENADO DE MAYOR A MENOR.\n");
+                            ordenarPorCodigo (archivoProductos);
+                            mostrarProductos(archivoProductos);
+                        }
+                        else if(ordenacionEleccion==2)
+                        {
+                            puts("----------------------------");
+                            printf(" ORDENADO DE MENOR A MAYOR.\n");
+                            ordenarPorCodigo(archivoProductos);
+                            pasarAPila(archivoProductos, &pilaOrdenadora);
+                            imprimirPila(&pilaOrdenadora);
+                        }
+                        else
+                        {
+                            printf("No ha ingresado una opcion correcta, Intentelo otra vez.\n");
+                        }
+                    }
+                    ordenacionEleccion=0;
+
+                    puts("----------------------------");
+
+                    break;
+                case 2:
+                    puts("----------------------------");
+                    printf(" ORDENADO POR NOMBRE.\n");
+                    ordenarPorNombre(archivoProductos);
+                    mostrarProductos(archivoProductos);
+                    puts("----------------------------");
+                    break;
+                case 3:
+                    puts("----------------------------");
+                    printf(" ORDENADO POR CANTIDAD.\n");
+                    ordenarPorCantidad(archivoProductos);
+                    mostrarProductos(archivoProductos);
+                    puts("----------------------------");
+                    break;
+                default:
+                    printf("Esa opcion no existe, intente otra vez.\n");
+                    break;
+                }
                 break;
-
-            }
-
-            break;
+        case 4:
+                printf("----- Stock -----\n");
+                mostrarCambioStock(archivoStock);
+                break;
         case 5:
+            do{
+            printf("Desea realizar un cambio en: \n");
+            printf(" 1.La lista de productos.\n");
+            printf(" 2.La ficha de stock.\n");
+            fflush(stdin);
+            scanf("%i",&cambio);
+            if (cambio == 1)
+            {
             printf("Ingrese el nombre del producto al cual desea cambiarle un dato.\n");
             fflush(stdin);
             gets(nombre);
             modificarDatosProducto("productos.bin", nombre);
 
-            break;
-        case 6:
+            }
+            else if(cambio==2)
+            {
             printf("Ingrese la fecha ingresada en la ficha de stock.\n");
             fflush(stdin);
             gets(fecha);
@@ -207,8 +235,14 @@ int main()
             fflush(stdin);
             gets(nombre);
             modificarDatosStock("fichastock.bin", nombre,fecha );
+            }
+            else
+                {
+                    printf("Opcion inresada incorrecta, intentelo otra vez");
+                }
+            }while(cambio!=1 && cambio!=2);
             break;
-        case 7:
+        case 6:
             printf(" Buscar por(:\n");
             printf(" 1. Codigo.\n");
             printf(" 2. Nombre.\n");
@@ -224,8 +258,8 @@ int main()
                 printf(" Ingrese el codigo a buscar:\n");
                 fflush(stdin);
                 scanf("%i", &codigoBuscado);
-                posicionCodigo=buscarXcodigo("productos.bin",codigoBuscado);
-                mostrarXposicion("productos.bin",posicionCodigo);
+                posicionCodigo=buscarXcodigo(archivoProductos,codigoBuscado);
+                mostrarXposicion(archivoProductos,posicionCodigo);
                 puts("----------------------------");
                 break;
             case 2:
@@ -236,30 +270,32 @@ int main()
                 printf(" Ingrese el nombre a buscar:\n");
                 fflush(stdin);
                 gets(nombreBuscado);
-                posicionNombre=buscarXnombre("productos.bin",nombreBuscado);
-                mostrarXposicion("productos.bin",posicionNombre);
+                posicionNombre=buscarXnombre(archivoProductos,nombreBuscado);
+                mostrarXposicion(archivoProductos,posicionNombre);
                 puts("----------------------------");
                 break;
             }
             break;
-        case 8:
-            continuar = 's';
-            while (continuar == 's'){
-            RangoFechas ("fichastock.bin");
-            printf("Presione 's' si desea continuar buscando rangos\n");
+        case 7:
+            printf("Ingrese el numero de la opcion que desea realizar:\n");
+            printf(" 1.ver ficha de stock en cierto rango de fechas\n");
+            printf(" 2. cre .\n");
+            printf(" 3. .\n");
             fflush(stdin);
-            scanf("%c",&continuar);
+            scanf("%i",&opcion);
+            continuar = 's';
+            while (continuar == 's')
+            {
+                RangoFechas (archivoStock);
+                printf("Presione 's' si desea continuar buscando rangos\n");
+                fflush(stdin);
+                scanf("%c",&continuar);
             }
             MatrizAArchivo();
+            mostrarArchivosRangos("ArchivoRangos.bin");
+            break;
 
 
-            break;
-        case 9:
-
-              mostrarArchivosRangos("ArchivoRangos.bin");
-            break;
-        case 10:
-            break;
         default:
             if (eleccion != 0)
             {
@@ -271,22 +307,26 @@ int main()
 
     }
     while (eleccion != 0);
-    } else {
-        printf("Nombre de usuario o contraseña incorrectos.\n");
-    }
+}
+else
+{
+    printf("Nombre de usuario o contraseña incorrectos.\n");
+}
 
-    return 0;
+return 0;
 
 }
 
 
 //Funcion mostrar arhivo de strings
-void mostrarArchivosRangos(char rutaArchivo[]){
+void mostrarArchivosRangos(char rutaArchivo[])
+{
 
-FILE* arch = fopen(rutaArchivo, "rb");
-int contador = 1;
+    FILE* arch = fopen(rutaArchivo, "rb");
+    int contador = 1;
 
-    if (arch == NULL) {
+    if (arch == NULL)
+    {
         printf("No se pudo abrir el archivo\n");
         return;
     }
@@ -294,7 +334,8 @@ int contador = 1;
     size_t longString;
     char aux[100];
 
-    while (fread(&longString, sizeof(size_t), 1, arch) == 1) {
+    while (fread(&longString, sizeof(size_t), 1, arch) == 1)
+    {
         fread(aux, sizeof(char), longString, arch);
         aux[longString] = '\0';
         printf("%i:%s\n",contador, aux);
@@ -305,159 +346,180 @@ int contador = 1;
 }
 
 //funcion matriz a archivo
-void MatrizAArchivo(){
-int validos = contarMatriz();
-int i=0;
+void MatrizAArchivo()
+{
+    int validos = contarMatriz();
+    int i=0;
 
-FILE *arch = fopen("ArchivoRangos.bin","ab");
+    FILE *arch = fopen("ArchivoRangos.bin","ab");
 
-for(i=0;i<validos;i++){
+    for(i=0; i<validos; i++)
+    {
 
-    size_t longString = strlen(nombresArchivos[i]);
+        size_t longString = strlen(nombresArchivos[i]);
 
-    fwrite(&longString, sizeof(size_t), 1, arch);
-    fwrite(nombresArchivos[i], sizeof(char), longString, arch);
+        fwrite(&longString, sizeof(size_t), 1, arch);
+        fwrite(nombresArchivos[i], sizeof(char), longString, arch);
 
 
 
-}
+    }
 
-fclose(arch);
+    fclose(arch);
 
 }
 
 //funcion contar elementos matriz
-int contarMatriz(){
+int contarMatriz()
+{
 
-int flag = 0;
-int contador = 0;
-int i = 0;
-while(flag == 0 && i<100){
+    int flag = 0;
+    int contador = 0;
+    int i = 0;
+    while(flag == 0 && i<100)
+    {
 
-  if(strlen(nombresArchivos[i])>0){
+        if(strlen(nombresArchivos[i])>0)
+        {
 
-    contador++;
+            contador++;
 
-  }else{
+        }
+        else
+        {
 
-     flag = 1;
+            flag = 1;
 
-  }
+        }
 
-  i++;
+        i++;
 
-}
+    }
 
-return contador;
+    return contador;
 
 }
 
 //funcion CrearArchivo
-void CrearArchivo (char nuevoArchivo[30]){
-int contadorMatriz = contarMatriz();
-char extension []=".bin";
+void CrearArchivo (char nuevoArchivo[30])
+{
+    int contadorMatriz = contarMatriz();
+    char extension []=".bin";
 
-printf("Nombre del nuevo archivo\n");
-fflush(stdin);
-gets(nuevoArchivo);
-strcat(nuevoArchivo,extension);
+    printf("Nombre del nuevo archivo\n");
+    fflush(stdin);
+    gets(nuevoArchivo);
+    strcat(nuevoArchivo,extension);
 
-strcpy(nombresArchivos[contadorMatriz],nuevoArchivo);
-contadorMatriz++;
+    strcpy(nombresArchivos[contadorMatriz],nuevoArchivo);
+    contadorMatriz++;
 
-printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
+    printf("Nuevo archivo creado llamado : %s\n",nuevoArchivo);
 
 }
 
 //datos de un determinado periodo
-void RangoFechas (char rutaArchivo[]){
+void RangoFechas (char rutaArchivo[])
+{
 
-stock aux;
-char antigua[30];
-char reciente[30];
-char nuevoArchivo[30];
-char eleccion = 's';
+    stock aux;
+    char antigua[30];
+    char reciente[30];
+    char nuevoArchivo[30];
+    char eleccion = 's';
 
-printf("Fecha mas antigua YYYY/MM/DD:\n");
-fflush(stdin);
-gets(antigua);
+    printf("Fecha mas antigua YYYY/MM/DD:\n");
+    fflush(stdin);
+    gets(antigua);
 
-printf("Fecha mas reciente YYYY/MM/DD:\n");
-fflush(stdin);
-gets(reciente);
+    printf("Fecha mas reciente YYYY/MM/DD:\n");
+    fflush(stdin);
+    gets(reciente);
 
-printf("presione 's' si desea guardar el rango en un archivo?\n");
-fflush(stdin);
-scanf("%c",&eleccion);
-if(eleccion == 's'){
+    printf("presione 's' si desea guardar el rango en un archivo?\n");
+    fflush(stdin);
+    scanf("%c",&eleccion);
+    if(eleccion == 's')
+    {
 
-   CrearArchivo(nuevoArchivo);
-
-}
-
-FILE *arch = fopen(rutaArchivo,"rb");
-FILE *nuevoArch = fopen(nuevoArchivo,"ab");
-if (arch != NULL){
-
-    while (fread(&aux, sizeof(stock), 1, arch) > 0){
-
-           if (aux.fecha > antigua && aux.fecha < reciente){
-
-              mostrarUnCambioStock (aux);
-
-                 if(eleccion == 's'){
-
-                 fwrite(&aux,sizeof(stock),1,nuevoArch);
-
-                 }
-
-           }
+        CrearArchivo(nuevoArchivo);
 
     }
-fclose(nuevoArch);
-fclose(arch);
+
+    FILE *arch = fopen(rutaArchivo,"rb");
+    FILE *nuevoArch = fopen(nuevoArchivo,"ab");
+    if (arch != NULL)
+    {
+
+        while (fread(&aux, sizeof(stock), 1, arch) > 0)
+        {
+
+            if (aux.fecha > antigua && aux.fecha < reciente)
+            {
+
+                mostrarUnCambioStock (aux);
+
+                if(eleccion == 's')
+                {
+
+                    fwrite(&aux,sizeof(stock),1,nuevoArch);
+
+                }
+
+            }
+
+        }
+        fclose(nuevoArch);
+        fclose(arch);
 
 
-}
+    }
 
 }
 
 //Modificar cantidad de producto en stock
-void ModificarCantidadStock (char rutaArchivo[],stock aux){
+void ModificarCantidadStock (char rutaArchivo[],stock aux)
+{
 
-int posicion = -1;
-producto auxProducto;
-char nombreProducto[30];
-strcpy(nombreProducto,aux.nombre);
+    int posicion = -1;
+    producto auxProducto;
+    char nombreProducto[30];
+    strcpy(nombreProducto,aux.nombre);
 
-posicion = buscarXnombre("productos.bin",nombreProducto);
+    posicion = buscarXnombre("productos.bin",nombreProducto);
 
-FILE *arch = fopen("productos.bin","r+b");
+    FILE *arch = fopen("productos.bin","r+b");
 
-if(arch != NULL){
+    if(arch != NULL)
+    {
 
-    fseek(arch, posicion * sizeof(producto) , SEEK_SET);
-    fread(&auxProducto,sizeof(producto),1,arch);
+        fseek(arch, posicion * sizeof(producto), SEEK_SET);
+        fread(&auxProducto,sizeof(producto),1,arch);
 
-       if (aux.accion == 'I'){
+        if (aux.accion == 'I')
+        {
 
-           auxProducto.cantidad = auxProducto.cantidad + aux.cantidad;
+            auxProducto.cantidad = auxProducto.cantidad + aux.cantidad;
 
-       }else{
+        }
+        else
+        {
 
-          auxProducto.cantidad = auxProducto.cantidad - aux.cantidad;
+            auxProducto.cantidad = auxProducto.cantidad - aux.cantidad;
 
-       }
-      fseek(arch, posicion * sizeof(producto) , SEEK_SET);
-      fwrite(&auxProducto,sizeof(producto),1,arch);
+        }
+        fseek(arch, posicion * sizeof(producto), SEEK_SET);
+        fwrite(&auxProducto,sizeof(producto),1,arch);
 
-}else{
+    }
+    else
+    {
 
-   printf("Error: el archivo esta vacio\n");
+        printf("Error: el archivo esta vacio\n");
 
-}
+    }
 
-fclose(arch);
+    fclose(arch);
 
 }
 
@@ -807,7 +869,7 @@ void ordenacionSeleccionCodigo (producto arr[], int validos)
     }
 }
 
-//Funcion para mostrar stock
+// MOSTRAR UN STOCK
 void mostrarUnCambioStock (stock aux)
 {
     puts("\n-----------------------------------------------\n");
@@ -819,7 +881,7 @@ void mostrarUnCambioStock (stock aux)
     puts("\n-----------------------------------------------\n");
 }
 
-//funcion para mostrar TODOS cambios de stock
+//FUNCION PARA MOSTRAR TODOS LOS  DATOS DE STOCK
 void mostrarCambioStock(char rutaArchivo[])
 {
     stock aux;
@@ -842,10 +904,10 @@ void mostrarCambioStock(char rutaArchivo[])
     }
 }
 
-//Cargar ficha de stock
-void CargarFichaStock(char rutaArchivo[])
+//CARGAR FICHA DE STOCK
+void CargarFichaStock(char rutaArchivo[], char producto[])
 {
-    char eleccion = 's';
+
     stock aux;
     FILE *arch;
 
@@ -854,27 +916,16 @@ void CargarFichaStock(char rutaArchivo[])
     if(arch != NULL)
     {
 
-        while(eleccion == 's')
-        {
+        cargaStock(&aux, producto);
+        fwrite(&aux, sizeof(stock), 1, arch);
 
-            cargaStock(&aux);
-            fwrite(&aux, sizeof(stock), 1, arch);
+        ModificarCantidadStock(rutaArchivo,aux);
 
-            ModificarCantidadStock(rutaArchivo,aux);
-
-            printf("si desea seguir cargando escriba 's'\n");
-            fflush(stdin);
-            scanf("%c",&eleccion);
-            eleccion = tolower(eleccion);
-
-
-
-        }
         fclose(arch);
     }
 }
-
-void cargaStock(stock *aux)
+//CARGAR UN DATO DE STOCK
+void cargaStock(stock *aux,char producto[])
 {
     printf("Fecha(YYYY/MM/DD):\n");
     fflush(stdin);
@@ -883,10 +934,11 @@ void cargaStock(stock *aux)
     printf("Tipo de accion Egreso o Ingreso:\n");
     fflush(stdin);
     scanf("%c",&aux->accion);
+    aux->accion = toupper(aux->accion);
 
-    printf("Nombre del producto:\n");
-    fflush(stdin);
-    gets(aux->nombre);
+
+    printf("Nombre del producto: %s\n",producto);
+    strcpy(aux->nombre,producto);
 
     printf("Precio:\n");
     fflush(stdin);
@@ -898,7 +950,7 @@ void cargaStock(stock *aux)
 
 }
 
-//funcion para mostrar TODOS los productos
+//FUNCION PARA MOSTRAR TODOS LOS PRODUCTOS
 void mostrarProductos(char archivito[])
 {
     producto aux;
@@ -922,7 +974,7 @@ void mostrarProductos(char archivito[])
     }
 }
 
-//Funcion para mostrar de a un producto
+//FUNCION PARA MOSTRAR DE A UN PRODUCTO
 void mostrarUnProducto (producto aux)
 {
     puts("\n-----------------------------------------------\n");
@@ -933,7 +985,7 @@ void mostrarUnProducto (producto aux)
     puts("\n-----------------------------------------------\n");
 }
 
-// cargar cantidad deseada de productos
+// CARGAR CANTIDAD DESEADA DE UN PRODUCTO
 void CargarProducto(char rutaArchivo[])
 {
 
@@ -943,30 +995,30 @@ void CargarProducto(char rutaArchivo[])
 
 
 
-  while(eleccion == 's')
-  {
+    while(eleccion == 's')
+    {
         arch = fopen(rutaArchivo,"ab");
 
-            if(arch != NULL)
-           {
+        if(arch != NULL)
+        {
 
-               NuevoProducto(&aux);
-               fwrite(&aux, sizeof(producto), 1, arch);
-               printf("si desea seguir cargando escriba 's'\n");
-               fflush(stdin);
-               scanf("%c",&eleccion);
-               eleccion = tolower(eleccion);
-
-
-               fclose(arch);
-           }
+            NuevoProducto(&aux);
+            fwrite(&aux, sizeof(producto), 1, arch);
+            printf("si desea seguir cargando escriba 's'\n");
+            fflush(stdin);
+            scanf("%c",&eleccion);
+            eleccion = tolower(eleccion);
 
 
+            fclose(arch);
+        }
 
-  }
+
+
+    }
 }
 
-// Cargar un producto
+// CARGAR UN PRODUCTO
 void NuevoProducto(producto *productoNuevo)
 {
 
@@ -992,9 +1044,9 @@ void NuevoProducto(producto *productoNuevo)
 int buscarXcodigo(char nombreArchivo[], int codigoBuscado)
 {
     FILE *archi=fopen(nombreArchivo,"rb");
-                producto aux;
-                int flag=0;
-                int posicion=-1;
+    producto aux;
+    int flag=0;
+    int posicion=-1;
     if(archi!=NULL)
     {
         while(!feof(archi))
@@ -1003,10 +1055,10 @@ int buscarXcodigo(char nombreArchivo[], int codigoBuscado)
             {
                 fread(&aux,sizeof(producto),1,archi);
                 if(aux.codigo==codigoBuscado)
-                    {
+                {
                     flag=1;
                     break;
-                    }
+                }
             }
         }
 
@@ -1024,9 +1076,9 @@ int buscarXcodigo(char nombreArchivo[], int codigoBuscado)
 int buscarXnombre(char nombreArchivo[], char nombreBuscado[])
 {
     FILE *archi=fopen(nombreArchivo,"rb");
-                producto aux;
-                int flag=0;
-                int posicion=-1;
+    producto aux;
+    int flag=0;
+    int posicion=-1;
     if(archi!=NULL)
     {
         while(!feof(archi))
@@ -1034,11 +1086,11 @@ int buscarXnombre(char nombreArchivo[], char nombreBuscado[])
             if(!feof(archi))
             {
                 fread(&aux,sizeof(producto),1,archi);
-                if(strcmp(aux.nombre,nombreBuscado)==0)
-                    {
+                if(strcmpi(aux.nombre,nombreBuscado)==0)
+                {
                     flag=1;
                     break;
-                    }
+                }
             }
         }
 
@@ -1082,7 +1134,7 @@ void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora)
             fread(&aux,sizeof(producto),1,archi);
             apilar(pilaOrdenadora,aux.codigo);
         }
-fclose(archi);
+        fclose(archi);
 
     }
 }
@@ -1102,29 +1154,25 @@ int crearCodigo()
 {
     int codigoNuevo;
     producto aux;
-    ordenarPorCodigo("productos.bin");
+    ordenarPorCodigo(archivoProductos);
 
-FILE *archi = fopen("productos.bin", "rb");
+    FILE *archi = fopen(archivoProductos, "rb");
     if (archi != NULL)
     {
         fseek(archi, 0, SEEK_END);
         if (ftell(archi) == 0)
         {
-                codigoNuevo = 1;
-
-
+            codigoNuevo = 1;
         }
         else
         {
-                fseek(archi, -1 *sizeof(producto), SEEK_END);
-                fread(&aux, sizeof(producto), 1, archi);
-                codigoNuevo = aux.codigo + 1;
-         }
+            fseek(archi, -1 *sizeof(producto), SEEK_END);
+            fread(&aux, sizeof(producto), 1, archi);
+            codigoNuevo = aux.codigo + 1;
+        }
 
-
-
-}
-fclose(archi);
-printf("%04i\n", codigoNuevo);
-return codigoNuevo;
+    }
+    fclose(archi);
+    printf("%04i\n", codigoNuevo);
+    return codigoNuevo;
 }
