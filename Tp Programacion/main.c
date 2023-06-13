@@ -110,7 +110,7 @@ int main()
             printf(" 4. Mostrar Ficha de stock. \n");// MOSTRAR ARCH stock  POR articulo
             printf(" 5. Cambiar datos.\n"); // opcion para que sea en la ficha de stock o en la ficha de productos
             printf(" 6. Buscar.\n");
-            printf(" 7. Rangos de stock. \n");
+            printf(" 7. Archivos. \n");
             printf(" 0. Terminar el programa.\n");
             fflush(stdin);
             scanf("%i",&eleccion);
@@ -205,9 +205,43 @@ int main()
                 }
                 break;
             case 4:
-                printf("----- Stock -----\n");
-                mostrarCambioStock(archivoStock);
+                printf("Ingrese el numero de la opcion que desea realizar:\n");
+                printf("1. Mostrar todos los cambios de stock\n");
+                printf("2. Ver ficha de stock en cierto rango de fechas\n");
+                fflush(stdin);
+                scanf("%i",&opcion);
+                switch (opcion)
+                {
+                case 1:
+
+                    printf("----- Stock -----\n");
+                    mostrarCambioStock(archivoStock);
+
+                    break;
+
+                case 2:
+                    continuar = 's';
+                    while (continuar == 's')
+                    {
+                        RangoFechas (archivoStock);
+                        printf("Presione 's' si desea continuar buscando rangos\n");
+                        fflush(stdin);
+                        scanf("%c",&continuar);
+                    }
+                    MatrizAArchivo(nombresArchivos,"ab");
+
+                    break;
+
+                default:
+
+                    printf("Esa opcion no existe\n");
+
+                    break;
+
+                }
+
                 break;
+
             case 5:
                 do
                 {
@@ -278,45 +312,12 @@ int main()
 
 
             break;
-        case 7:
-            printf("Ingrese el numero de la opcion que desea realizar:\n");
-            printf(" 1. Ver ficha de stock en cierto rango de fechas\n");
-            printf(" 2. Mostrar archivos guardados\n");
-            fflush(stdin);
-            scanf("%i",&opcion);
 
-            switch (opcion){
+            case 7:
 
-                case 1:
-                   continuar = 's';
-                   while (continuar == 's')
-                   {
-                    RangoFechas (archivoStock);
-                       printf("Presione 's' si desea continuar buscando rangos\n");
-                       fflush(stdin);
-                       scanf("%c",&continuar);
-                   }
-                       MatrizAArchivo(nombresArchivos,"ab");
+                mostrarArchivosRangos("ArchivoRangos.bin");
 
-                    break;
-
-                case 2:
-
-                    mostrarArchivosRangos("ArchivoRangos.bin");
-
-                    break;
-
-                default:
-
-                    printf("Esa opcion no existe\n");
-
-                break;
-                }
-
-                break;
-            case 10:
-
-                break;
+            break;
 
             default:
                 if (eleccion != 0)
