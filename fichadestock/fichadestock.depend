@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1686712390 source:c:\users\user\documents\github\programacion\fichadestock\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
+1490112217 c:\users\user\documents\github\programacion\fichadestock\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1490112217 source:c:\users\user\documents\github\programacion\fichadestock\pila.c
+	"pila.h"
+

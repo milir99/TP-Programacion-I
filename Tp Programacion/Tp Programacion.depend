@@ -1,0 +1,79 @@
+# depslib dependency file v1.0
+1685592819 source:c:\users\propietario\documents\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+
+1685385088 c:\users\propietario\documents\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1686691869 source:c:\users\valentin\documents\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
+1684988378 c:\users\valentin\documents\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1684988378 source:c:\users\valentin\documents\github\programacion\tp programacion\pila.c
+	"pila.h"
+
+1685769933 source:c:\users\valentin\documents\github\programacion\tp programacion\prueba.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+
+1490112217 source:c:\users\user\documents\github\programacion\tp programacion\pila.c
+	"pila.h"
+
+1490112217 c:\users\user\documents\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1686606648 source:c:\users\user\documents\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
+1686261344 source:c:\users\pedro\documents\github\programacion\tp programacion\pila.c
+	"pila.h"
+
+1686261344 c:\users\pedro\documents\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1686500595 source:c:\users\pedro\documents\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+
+1685471773 source:c:\users\josev\onedrive\documentos\github\programacion\tp programacion\pila.c
+	"pila.h"
+
+1685471773 c:\users\josev\onedrive\documentos\github\programacion\tp programacion\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1686676563 source:c:\users\josev\onedrive\documentos\github\programacion\tp programacion\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
+1686704077 source:c:\users\user\documents\github\programacion\tp programacion\main (9).c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
