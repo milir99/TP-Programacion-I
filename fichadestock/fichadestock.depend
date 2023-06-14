@@ -13,3 +13,17 @@
 1490112217 source:c:\users\user\documents\github\programacion\fichadestock\pila.c
 	"pila.h"
 
+1686720247 source:c:\users\valentin\documents\github\programacion\fichadestock\pila.c
+	"pila.h"
+
+1686720247 c:\users\valentin\documents\github\programacion\fichadestock\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1686762561 source:c:\users\valentin\documents\github\programacion\fichadestock\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
