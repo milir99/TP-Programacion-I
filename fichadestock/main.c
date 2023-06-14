@@ -134,13 +134,7 @@ int main()
                     if(flag==-1)
                     {
                         printf("El producto no se encuentra cargado\n");
-                        printf("Ingrese 's' si desea cargarlo\n");
-                        fflush(stdin);
-                        scanf("%c",&carga);
-                        if (carga == 's')
-                        {
-                            CargarProducto(archivoProductos);
-                        }
+
                     }
                     else
                     {
@@ -909,7 +903,8 @@ void cambiarProducto(producto *aux)
     printf("\nIngrese el numero de la opcion que desea cambiar o 0 para terminar \n");
     printf(" 1.Codigo.\n");
     printf(" 2.Nombre.\n");
-    printf(" 3.precio.\n");
+    printf(" 3.Precio.\n");
+    printf(" 4.Cantidad.\n");
     fflush(stdin);
     scanf("%i",&eleccion);
     switch (eleccion)
@@ -934,6 +929,9 @@ void cambiarProducto(producto *aux)
         fflush(stdin);
         scanf("%i", &aux->cantidad);
         break;
+    default:
+         printf("Ingreso una opcion incorrecta.\n");
+         break;
 
     }
 
