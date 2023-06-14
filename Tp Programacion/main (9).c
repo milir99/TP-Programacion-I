@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pila.h"
+//#include "pila.h"
 #include <string.h>
 #include <ctype.h>
 #define fila 100
@@ -59,8 +59,8 @@ int buscarXcodigo(char archivito[], int codigoBuscado);
 int buscarXcantidad(char nombreArchivo[], int cantidadBuscada);
 int buscarXnombre(char nombreArchivo[], char nombrebuscado[]);
 void mostrarXposicion(char nombreArchivo[], int posicion);
-void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
-void imprimirPila(Pila *pilaOrdenadora);
+//void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
+//void imprimirPila(Pila *pilaOrdenadora);
 void mostrarCambioStockProducto(char rutaArchivo[]);
 void stockCantidadProducto(stock aux,int posicion);
 void stockPrecioProducto(stock aux,int posicion);
@@ -82,8 +82,8 @@ int main()
 
     char usuarioCorrecto[] = "milagros";
     char contraseniaCorrecta[] = "1234";
-    Pila pilaOrdenadora;
-    inicpila(&pilaOrdenadora);
+//    Pila pilaOrdenadora;
+//    inicpila(&pilaOrdenadora);
 
     char usuario[20];
     char contrasenia[20];
@@ -172,8 +172,8 @@ int main()
                             puts("----------------------------");
                             printf(" ORDENADO DE MAYOR A MENOR.\n");
                             ordenarPorCodigo(archivoProductos);
-                            pasarAPila(archivoProductos, &pilaOrdenadora);
-                            imprimirPila(&pilaOrdenadora);
+//                            pasarAPila(archivoProductos, &pilaOrdenadora);
+//                            imprimirPila(&pilaOrdenadora);
                         }
                         else
                         {
@@ -679,6 +679,7 @@ fclose(arch);
 
 
 }
+
 //Cambia la cantidad de productos a partir de entrada/salida de stock
 void stockCantidadProducto(stock aux,int posicion){
 
@@ -710,8 +711,9 @@ FILE *arch = fopen("productos.bin","r+b");
     else
     {
 
-        printf("Error: el archivo esta vacio\n");
-
+        puts("--------------------------------------");
+        printf("Error al abrir el archivo\n");
+        puts("--------------------------------------");
     }
 
 fclose(arch);
@@ -1360,35 +1362,35 @@ void mostrarXposicion(char nombreArchivo[], int posicion)
 }
 
 //PASAR DE ARCHIVO A PILA (UNA VEZ ORDENADO)
-void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora)
-{
+//void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora)
+//{
+//
+//    FILE *archi=fopen(nombreArchivo,"rb");
+//    producto aux;
+//
+//    if(archi!=NULL)
+//    {
+//        while(fread(&aux,sizeof(producto),1,archi)>0)
+//        {
+//
+//            apilar(pilaOrdenadora,aux.codigo);
+//
+//        }
+//
+//
+//    }
+//    fclose(archi);
+//}
 
-    FILE *archi=fopen(nombreArchivo,"rb");
-    producto aux;
-
-    if(archi!=NULL)
-    {
-        while(fread(&aux,sizeof(producto),1,archi)>0)
-        {
-
-            apilar(pilaOrdenadora,aux.codigo);
-
-        }
-
-
-    }
-    fclose(archi);
-}
-
-void imprimirPila(Pila *pilaOrdenadora)
-{
-    while(!pilavacia(pilaOrdenadora))
-    {
-        int posicionCodigo=buscarXcodigo(archivoProductos,tope(pilaOrdenadora));
-        mostrarXposicion(archivoProductos, posicionCodigo);
-        desapilar(pilaOrdenadora);
-    }
-}
+//void imprimirPila(Pila *pilaOrdenadora)
+//{
+//    while(!pilavacia(pilaOrdenadora))
+//    {
+//        int posicionCodigo=buscarXcodigo(archivoProductos,tope(pilaOrdenadora));
+//        mostrarXposicion(archivoProductos, posicionCodigo);
+//        desapilar(pilaOrdenadora);
+//    }
+//}
 
 //FUNCION QUE CREA EL CODIGO
 int crearCodigo()
