@@ -16,11 +16,11 @@
 	<string.h>
 	<ctype.h>
 
-1684988378 c:\users\valentin\documents\github\programacion\tp programacion\pila.h
+1490112217 c:\users\valentin\documents\github\programacion\tp programacion\pila.h
 	<stdio.h>
 	<malloc.h>
 
-1684988378 source:c:\users\valentin\documents\github\programacion\tp programacion\pila.c
+1490112217 source:c:\users\valentin\documents\github\programacion\tp programacion\pila.c
 	"pila.h"
 
 1685769933 source:c:\users\valentin\documents\github\programacion\tp programacion\prueba.c
@@ -71,6 +71,13 @@
 	<ctype.h>
 
 1686704077 source:c:\users\user\documents\github\programacion\tp programacion\main (9).c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+	<string.h>
+	<ctype.h>
+
+1686758732 source:c:\users\valentin\documents\github\programacion\tp programacion\main (9).c
 	<stdio.h>
 	<stdlib.h>
 	"pila.h"

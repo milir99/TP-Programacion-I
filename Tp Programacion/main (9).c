@@ -62,6 +62,8 @@ void mostrarXposicion(char nombreArchivo[], int posicion);
 void pasarAPila(char nombreArchivo[], Pila *pilaOrdenadora );
 void imprimirPila(Pila *pilaOrdenadora);
 void mostrarCambioStockProducto(char rutaArchivo[]);
+void stockCantidadProducto(stock aux,int posicion);
+void stockPrecioProducto(stock aux,int posicion);
 
 
 int main()
@@ -636,18 +638,52 @@ void RangoFechas (char rutaArchivo[])
 
 }
 
-//Modificar cantidad de producto en stock
-void ModificarCantidadStock (char rutaArchivo[],stock aux)
-{
+//Cambia el precio de productos a partir de entrada/salida de stock
+void stockPrecioProducto(stock aux,int posicion){
 
-    int posicion = -1;
-    producto auxProducto;
-    char nombreProducto[col];
-    strcpy(nombreProducto,aux.nombre);
+producto auxProducto;
+FILE *arch = fopen("productos.bin","r+b");
 
-    posicion = buscarXnombre("productos.bin",nombreProducto);
+    if(arch != NULL)
+    {
 
-    FILE *arch = fopen("productos.bin","r+b");
+        fseek(arch, posicion * sizeof(producto), SEEK_SET);
+        fread(&auxProducto,sizeof(producto),1,arch);
+        if (aux.accion == 'I')
+        {
+            if(auxProducto.precio<(aux.precio*1.21*1.3))
+            {
+
+
+                auxProducto.precio= aux.precio*1.21*1.3;
+
+            }
+        }
+
+        fseek(arch, posicion * sizeof(producto), SEEK_SET);
+        fwrite(&auxProducto,sizeof(producto),1,arch);
+
+    }
+    else
+    {
+
+        printf("Error: el archivo esta vacio\n");
+
+    }
+
+fclose(arch);
+
+
+
+
+
+
+}
+//Cambia la cantidad de productos a partir de entrada/salida de stock
+void stockCantidadProducto(stock aux,int posicion){
+
+producto auxProducto;
+FILE *arch = fopen("productos.bin","r+b");
 
     if(arch != NULL)
     {
@@ -678,7 +714,21 @@ void ModificarCantidadStock (char rutaArchivo[],stock aux)
 
     }
 
-    fclose(arch);
+fclose(arch);
+
+}
+
+//Modificar producto a partir de ficha stock
+void ModificarCantidadStock (char rutaArchivo[],stock aux)
+{
+
+    int posicion = -1;
+    char nombreProducto[col];
+    strcpy(nombreProducto,aux.nombre);
+
+    posicion = buscarXnombre("productos.bin",nombreProducto);
+    stockCantidadProducto(aux,posicion);
+    stockPrecioProducto(aux,posicion);
 
 }
 
@@ -1087,8 +1137,9 @@ void CargarFichaStock(char rutaArchivo[], char producto[])
         fclose(arch);
     }
 }
+
 //CARGAR UN DATO DE STOCK
-void cargaStock(stock *aux,char producto[])
+void cargaStock(stock *aux,char nombreProducto[])
 {
     printf("Fecha(YYYY/MM/DD):\n");
     fflush(stdin);
@@ -1100,12 +1151,29 @@ void cargaStock(stock *aux,char producto[])
     aux->accion = toupper(aux->accion);
 
 
-    printf("Nombre del producto: %s\n",producto);
-    strcpy(aux->nombre,producto);
+    printf("Nombre del producto: %s\n",nombreProducto);
+    strcpy(aux->nombre,nombreProducto);
 
-    printf("Precio:\n");
-    fflush(stdin);
-    scanf("%f.2",&aux->precio);
+    if(aux->accion == 'E')
+    {
+
+        producto auxiliar;
+        FILE *arch = fopen("productos.bin","rb");
+        int pos = buscarXnombre("productos.bin",nombreProducto);
+        fseek(arch,pos * sizeof(producto),SEEK_SET);
+        fread(&auxiliar,sizeof(producto),1,arch);
+        aux->precio = auxiliar.precio;
+        fclose(arch);
+        printf("Precio de venta:%.2f\n",aux->precio);
+    }
+    else
+    {
+
+        printf("Precio de compra:\n");
+        fflush(stdin);
+        scanf("%f.2",&aux->precio);
+
+    }
 
     printf("Cantidad:\n");
     fflush(stdin);
