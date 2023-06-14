@@ -82,12 +82,12 @@ int main()
     int posicionNombre;
     int codigoBuscado;
     int posicionCodigo;
-
+    int i=0;
     char usuarioCorrecto[] = "milagros";
     char contraseniaCorrecta[] = "1234";
     Pila pilaOrdenadora;
     inicpila(&pilaOrdenadora);
-
+   do{
     char usuario[20];
     char contrasenia[20];
     printf("Usuario: ");
@@ -97,7 +97,7 @@ int main()
     if (strcmp(usuario, usuarioCorrecto) == 0 && strcmp(contrasenia, contraseniaCorrecta) == 0)
     {
 
-
+       i=-1;
         printf("******************************\n");
         printf("*        BIENVENIDO          *\n");
         printf("******************************\n");
@@ -368,8 +368,22 @@ int main()
     }
     else
     {
-        printf("Nombre de usuario o clave incorrecto/a.\n");
+        i++;
+        if(i<3)
+    {  puts("-------------------------------------------");
+       printf("Nombre de usuario o clave incorrecto/a.\n");
+       puts("--------------------------------------------");
+        printf("Intentelo otra vez.\n");
     }
+    else
+    {
+        puts("---------------------------------------------------------------");
+        printf("Clave o usuario ingresado incorrectamente demasiadas veces.\n");
+        puts("---------------------------------------------------------------");
+    }
+
+    }
+   } while (i<3&&i!=-1);
 
     return 0;
 
